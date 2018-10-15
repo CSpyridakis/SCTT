@@ -1,3 +1,4 @@
+#!/bin/sh
 #####################################################################################################################
 #
 #   apps_install-1.0-debian.sh
@@ -8,15 +9,24 @@
 #
 #
 #   Description : Install some of my favorites (and in my personal point of view usefull) applications in a 
-#				  Debian based system (Tested on Ubuntu Unity 16.04). This script is free software ; please make
-#				  sure to read the manual of each application before install or use it. I am not responsible for 
-#				  any damage  
+#			Debian based system (Tested on Ubuntu Unity 16.04). This script is free software ; please make
+#			sure to read the manual of each application before install or use it. I am not responsible for 
+#			any damage  
 #
 #
-#   Additional Comments: For some Applications, their description is based on official application's description 
-#
+#   Additional Comments: 
+#			1)For some Applications, their description is based on official application's description 
+#			2)There are the following main "functions" :
+#					a) __ADDREP - Use it in order to execute command "sudo add-apt-repository -y" and afterwards update system
+#					b) __INST - Use it in order to execute command "sudo apt-get -y install"
+#					c) __GET - TODO: Download applications from official site
 #
 ####################################################################################################################
+
+red=`tput setaf 1`
+green=`tput setaf 2`
+yellow=`tput setaf 3`
+reset=`tput sgr0`
 
 helpMenu(){
     echo "Usage: $0 [Option]... [Option]... "
@@ -38,61 +48,109 @@ helpMenu(){
 	echo "-L, --Light 			install only basic tools"
 }
 
+#Install app 
+__INST(){
+	for app in "$@" 
+	do
+		sudo apt-get -y install ${app} || echo && echo "${app} : ${red}Installation FAILED${reset}"
+	done
+}
+
+#Add repository
+__ADDREP(){
+	sudo add-apt-repository -y ${1}
+	sudo apt-get -y update --fix-missing
+	#echo "Repo added"
+}
+
 #Update and upgrade system
-upe(){
-    sudo apt-get autoclean
-    sudo apt-get autoremove
+__UPDG(){
     sudo apt-get -y update --fix-missing
     sudo apt-get -y upgrade 
-    #echo "System update and upgrade completed!\n"
+    sudo apt-get -y autoclean
+    sudo apt-get -y autoremove
+    #echo "System update and upgrade completed!"
+}
+
+#Update system
+__UPD(){  
+    sudo apt-get -y update --fix-missing
+    #echo "Update"
+}
+
+__GET(){
+
+}
+
+#Print some interesting informations at the end
+__INFO(){
+	echo "${yellow}SCRIPT RESULTS:${reset}"
+
+	#TODO: print applications with 
+	#Installation Error 
+	#if [[ ${#array[@]} > 0 ]]
+	#then 
+	#	echo "There is a problem with the installation of the following tools"
+	#	for app in "${array[@]}"
+	#	do
+    #		echo "$app"
+	#	done
+	#fi
+
+	echo "Installation Completed! You may want to install also:"
+	echo "1) Teamviewer"
+	echo "2) Xampp or/and Tomcat"
+	echo "3) Vmware"
+	echo "4) Android Studio"
+	echo "5) IDEs of Jetbrains"
+	echo "6) Slack"
+	echo "7) VNC"
+	echo "8) Viber"
 }
 
 contentCreate(){
-    sudo apt-get -y install blender                                    #3D modeling tool
-    #sudo apt-get -y install Kdenlive                                  #Video Editing Software
-    #sudo apt-get -y install krita                                     #Photo Editing Software
+    __INST blender                                    #3D modeling tool
+    #__INST Kdenlive                                  #Video Editing Software
+    #__INST krita                                     #Photo Editing Software
 
     #Gimp - Photo Editing Software
-    sudo add-apt-repository -y ppa:otto-kesselgulasch/gimp
-    sudo apt-get update -y
-    sudo apt-get -y install gimp
+    __ADDREP ppa:otto-kesselgulasch/gimp
+    __INST gimp
 
     #TODO : Lightworks
 }
 
 codeDeveloping(){
-    sudo apt-get -y install git                                        #Version control system
-    sudo apt-get -y install vim                                        #Vim terminal text editor
-    #sudo apt-get -y install emacs                                     #Emacs terminal text editor
-    #sudo apt-get -y install eclipse                                   #IDE
-    #sudo apt-get -y install netbeans                                  #IDE
+    __INST git                                        #Version control system
+    __INST vim                                        #Vim terminal text editor
+    #__INST emacs                                     #Emacs terminal text editor
+    #__INST eclipse                                   #IDE
+    #__INST netbeans                                  #IDE
 
-    #Android Studio
-    #sudo apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386 lib32z1 libbz2-1.0:i386
+    #Android Studio ?extra?
+    #__INST libc6:i386 libncurses5:i386 libstdc++6:i386 lib32z1 libbz2-1.0:i386
 }
 
 enginnering(){
-    sudo apt-get -y install filezilla                                   #File transfer application
-    sudo apt-get -y install arduino arduino-core                        #Arduino IDE
-    sudo apt-get -y install virtualbox                                  #Virtual Machine
-    sudo apt-get -y install phpmyadmin
-    #sudo apt-get -y install logisim                                    #logic circuits design
-    #sudo apt-get -y install eagle                                      #Schematics and pcb design tool
-    #sudo apt-get -y install fritzing                                   #Schematics and pcb design tool
-    #sudo apt-get -y install guake                                      #One key(drop-down) terminal
-    #sudo apt-get -y install qreator                                    #Create qr codes GUI
-    #sudo apt-get -y install qrencode                                   #Create qr codes Terminal
-    #sudo apt-get -y install zim                                        #Notes create
-    #sudo apt-get -y install kexi                                       #All in one Sql gui
+    __INST filezilla                                   #File transfer application
+    __INST arduino arduino-core                        #Arduino IDE
+    __INST virtualbox                                  #Virtual Machine
+    __INST phpmyadmin
+    #__INST logisim                                    #logic circuits design
+    #__INST eagle                                      #Schematics and pcb design tool
+    #__INST fritzing                                   #Schematics and pcb design tool
+    #__INST guake                                      #One key(drop-down) terminal
+    #__INST qreator                                    #Create qr codes GUI
+    #__INST qrencode                                   #Create qr codes Terminal
+    #__INST zim                                        #Notes create
+    #__INST kexi                                       #All in one Sql gui
 
     #Octave (Matlab linux alternative)
-    sudo add-apt-repository -y ppa:octave/stable                           
-    sudo apt-get -y update
-    sudo apt-get -y install octave
+    __ADDREP ppa:octave/stable
+    __INST octave
 
     #Postgresql Server and Client
-    sudo apt-get -y install pgadmin3
-    sudo apt-get install -y postgresql postgresql-contrib               
+    __INST pgadmin3 postgresql postgresql-contrib           
     apt-cache search postgres             
     #Postgresql Server configuration steps:
         #1) sudo -u postgres psql postgres  #Connect to db postgres via psql as user postgres
@@ -100,85 +158,80 @@ enginnering(){
 }
 
 files(){
-    sudo apt-get -y install system-config-samba                         #Share files on LAN
-    sudo apt-get -y install pdfshuffler                                 #Pdf editor (Merge, remove pages, etc)
-    sudo apt-get -y install meld                                        #Diff GUI programm (For both Files & Folders)
-    #sudo apt-get -y install dolphin                                    #File Browser
-    #sudo apt-get -y install bluefish                                   #Text editor
+    __INST system-config-samba                         #Share files on LAN
+    __INST pdfshuffler                                 #Pdf editor (Merge, remove pages, etc)
+    __INST meld                                        #Diff GUI programm (For both Files & Folders)
+    #__INST dolphin                                    #File Browser
+    #__INST bluefish                                   #Text editor
 
     #Sublime text editor
-    sudo add-apt-repository -y ppa:webupd8team/sublime-text-3              
-    sudo apt-get update -y
-    sudo apt-get -y install sublime-text-installer
-    #sudo apt-get -y install subliminal
+    __ADDREP ppa:webupd8team/sublime-text-3              
+    __INST sublime-text-installer
+    #__INST subliminal
 
     #Atom text editor
-    sudo add-apt-repository -y ppa:webupd8team/atom                        
-    sudo apt-get update -y
-    sudo apt-get -y install atom
+    __ADDREP ppa:webupd8team/atom                        
+    __INST atom
 }
 
 games(){
-    sudo apt-get install -y hedgewars                                   #Worms game
+    __INST hedgewars                                   #Worms game
 }
 
 media(){
-    sudo apt-get -y install vlc browser-plugin-vlc                      #VLC player
-    sudo apt-get -y install tomahawk                                    #Music player
-    #sudo apt-get -y install clementine                                 #Music player
+    __INST vlc browser-plugin-vlc                      #VLC player
+    __INST tomahawk                                    #Music player
+    #__INST clementine                                 #Music player
 
     #KODI media center
-    sudo apt-get -y install software-properties-common                  
-    sudo add-apt-repository -y ppa:team-xbmc/ppa
-    sudo apt-get update -y
-    sudo apt-get -y install kodi
+    __INST software-properties-common                  
+    __ADDREP ppa:team-xbmc/ppa
+    __INST kodi
 }
 
 net() {
-    sudo apt-get -y install skype
-    sudo apt-get -y install chromium-browser
+    __INST chromium-browser
 }
 
 pentest(){
-    sudo apt-get -y install linssid                                     #Wireless access points informations
-    sudo apt-get -y install etherape                                    #Network mapping tool 
-    sudo apt-get -y install wireshark                                   #Network packages tool
-    sudo apt-get -y install aircrack-ng                                 #Network tool
-    sudo apt-get -y install nmap                                        #Network mapping tool
-    sudo apt-get -y install zenmap                                      #GUI Network mapping tool
-    sudo apt-get -y install john                                        #Decrypt passwords, hashes etc...  
-    sudo apt-get -y install macchanger                                  #Change Mac address
-    sudo apt-get -y install cmatrix                                     #Just for fun xD, matrix style on terminal
+    __INST linssid                                     #Wireless access points informations
+    __INST etherape                                    #Network mapping tool 
+    __INST wireshark                                   #Network packages tool
+    __INST aircrack-ng                                 #Network tool
+    __INST nmap                                        #Network mapping tool
+    __INST zenmap                                      #GUI Network mapping tool
+    __INST john                                        #Decrypt passwords, hashes etc...  
+    __INST macchanger                                  #Change Mac address
+    __INST cmatrix                                     #Just for fun xD, matrix style on terminal
 }
 
 system(){
-    sudo apt-get -y install software-properties-common                 #Extra softwate packages install
-    sudo apt-get remove unity-lens-shopping                            #Unity Dash search remove
-    sudo apt-get -y install network-manager                            #Network-Manager
-    sudo apt-get -y install gparted                                    #Partition-editing application
-    sudo apt-get -y install htop                                       #Interactive process viewer
-    sudo apt-get -y install synergy                                    #Mouse and Keyboard sharing Software
-    sudo apt-get -y install dconf-tools                                #Low-level configuration system for GSettings
-    sudo apt-get -y install evince                                     #Pdf viewer 
-    sudo apt-get -y install expect                                     #Automate events using expected words tool
-    sudo apt-get -y install hardinfo                                   #System usefull informations
-    sudo apt-get -y install openvpn                                    #VPN configuring                         
-    sudo apt-get -y install caffeine                                   #Easily enable/disable screensaver applet
-    sudo apt-get -y install psensor                                    #System Temps
-    sudo apt-get -y install parcellite                                 #Clipboard manager Applet
-    sudo apt-get -y install indicator-multiload                        #Graphical system load indicator for CPU, ram, etc
-    sudo apt-get -y install alarm-clock-applet                         #Alarm clock 
-    sudo apt-get -y install gnome-system-monitor                       #System Monitor
-    sudo apt-get -y install unity-tweak-tool                           #GUI customization tool
-    sudo apt-get -y install gnome-tweak-tool                           #GUI customization tool
-    #sudo apt-get -y install xsensors lm-sensors                       #Sensors (Use $sensors-detect)
-    #sudo apt-get -y install openjdk-8-jdk
-    #sudo apt-get -y install wallch                                    #Wallpaper Clock
+    #sudo apt-get remove unity-lens-shopping          #Unity Dash search remove
+    __INST software-properties-common                 #Extra softwate packages install
+    __INST network-manager                            #Network-Manager
+    __INST gparted                                    #Partition-editing application
+    __INST htop                                       #Interactive process viewer
+    __INST synergy                                    #Mouse and Keyboard sharing Software
+    __INST dconf-tools                                #Low-level configuration system for GSettings
+    __INST evince                                     #Pdf viewer 
+    __INST expect                                     #Automate events using expected words tool
+    __INST hardinfo                                   #System usefull informations
+    __INST openvpn                                    #VPN configuring                         
+    __INST caffeine                                   #Easily enable/disable screensaver applet
+    __INST psensor                                    #System Temps
+    __INST parcellite                                 #Clipboard manager Applet
+    __INST indicator-multiload                        #Graphical system load indicator for CPU, ram, etc
+    __INST alarm-clock-applet                         #Alarm clock 
+    __INST gnome-system-monitor                       #System Monitor
+    __INST unity-tweak-tool                           #GUI customization tool
+    __INST gnome-tweak-tool                           #GUI customization tool
+    #__INST xsensors lm-sensors                       #Sensors (Use $sensors-detect)
+    #__INST openjdk-8-jdk
+    #__INST wallch                                    #Wallpaper Clock
     
     #Numix theme
-    sudo add-apt-repository -y ppa:numix/ppa                              
-    sudo apt-get update -y
-    sudo apt-get -y install numix-gtk-theme numix-icon-theme-circle numix-wallpaper-notd
+    __ADDREP ppa:numix/ppa                              
+    __INST numix-gtk-theme numix-icon-theme-circle numix-wallpaper-notd
 }
 
 full(){
@@ -201,37 +254,25 @@ light(){
 	system
 }
 
-etc(){
-	echo "Installation Completed! You may want to install also:"
-	echo "1) Teamviewer"
-	echo "2) Xampp or/and Tomcat"
-	echo "3) Vmware"
-	echo "4) Android Studio"
-	echo "5) IDEs of Jetbrains"
-	echo "6) Slack"
-	echo "7) VNC"
-	echo "8) Viber"
-}
-
 
 #MAIN
 while :
 do
     case "$1" in
-        -c | --content) 	upe ; contentCreate ;   shift ;;
-        -d | --develop)     upe ; codeDeveloping ;  shift ;;
-        -e | --enginnering) upe ; enginnering ;     shift ;;
-        -f | --files)       upe ; files ;           shift ;;
-        -g | --games)       upe ; games ;           shift ;;
-        -h | --help)        	  helpMenu ;        exit 0;;
-        -m | --media)       upe ; media ;           shift ;;
-        -n | --net)         upe ; net ;             shift ;;
-        -p | --pentest)     upe ; pentest ;         shift ;;
-        -s | --system)      upe ; system ;          shift ;;
+        -c | --content) 	__UPDG ; contentCreate ;   shift ;;
+        -d | --develop)     __UPDG ; codeDeveloping ;  shift ;;
+        -e | --enginnering) __UPDG ; enginnering ;     shift ;;
+        -f | --files)       __UPDG ; files ;           shift ;;
+        -g | --games)       __UPDG ; games ;           shift ;;
+        -h | --help)        	     helpMenu ;        exit 0;;
+        -m | --media)       __UPDG ; media ;           shift ;;
+        -n | --net)         __UPDG ; net ;             shift ;;
+        -p | --pentest)     __UPDG ; pentest ;         shift ;;
+        -s | --system)      __UPDG ; system ;          shift ;;
 
-        -F | --Full)        upe ; full ; break ;; 
+        -F | --Full)        __UPDG ; full ; break ;; 
 
-        -L | --Light)       upe ; light ; shift ;;
+        -L | --Light)       __UPDG ; light ; shift ;;
 
         --*)
             echo "Unknown option: $1" >&2
@@ -247,5 +288,5 @@ do
             break
     esac
 done
-upe
-etc
+__UPDG
+__INFO
