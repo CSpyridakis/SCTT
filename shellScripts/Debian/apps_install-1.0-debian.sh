@@ -13,7 +13,7 @@
 #				  any damage  
 #
 #
-#   Additional Comments: For some Applications, their description is based on official's application description 
+#   Additional Comments: For some Applications, their description is based on official application's description 
 #
 #
 ####################################################################################################################
@@ -160,7 +160,7 @@ system(){
     sudo apt-get -y install synergy                                    #Mouse and Keyboard sharing Software
     sudo apt-get -y install dconf-tools                                #Low-level configuration system for GSettings
     sudo apt-get -y install evince                                     #Pdf viewer 
-    sudo apt-get -y install expect                                     #Automate events
+    sudo apt-get -y install expect                                     #Automate events using expected words tool
     sudo apt-get -y install hardinfo                                   #System usefull informations
     sudo apt-get -y install openvpn                                    #VPN configuring                         
     sudo apt-get -y install caffeine                                   #Easily enable/disable screensaver applet
