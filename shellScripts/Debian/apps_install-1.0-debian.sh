@@ -158,9 +158,10 @@ enginnering(){
 }
 
 files(){
-    __INST system-config-samba                         #Share files on LAN
+    __INST system-config-samba samba                   #Share files on LAN (In order to setup user use: sudo smbpasswd -a username)
     __INST pdfshuffler                                 #Pdf editor (Merge, remove pages, etc)
     __INST meld                                        #Diff GUI programm (For both Files & Folders)
+    __INST qbittorrent								   #Torrent client
     #__INST dolphin                                    #File Browser
     #__INST bluefish                                   #Text editor
 
@@ -228,7 +229,13 @@ system(){
     #__INST xsensors lm-sensors                       #Sensors (Use $sensors-detect)
     #__INST openjdk-8-jdk
     #__INST wallch                                    #Wallpaper Clock
-    
+    #__INST kazam									  #Screen recording
+    #__INST bacula									  #Backup System
+
+    #Download manager
+    #__ADDREP ppa:plushuang-tw/uget-stable
+    #__INST uget
+
     #Numix theme
     __ADDREP ppa:numix/ppa                              
     __INST numix-gtk-theme numix-icon-theme-circle numix-wallpaper-notd
