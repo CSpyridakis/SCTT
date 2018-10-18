@@ -226,6 +226,7 @@ system(){
     __INST gnome-system-monitor                       #System Monitor
     __INST unity-tweak-tool                           #GUI customization tool
     __INST gnome-tweak-tool                           #GUI customization tool
+    
     #__INST xsensors lm-sensors                       #Sensors (Use $sensors-detect)
     #__INST openjdk-8-jdk
     #__INST wallch                                    #Wallpaper Clock
@@ -235,6 +236,10 @@ system(){
     #Download manager
     #__ADDREP ppa:plushuang-tw/uget-stable
     #__INST uget
+    
+	#Python 3.6
+    __ADDREP ppa:jonathonf/python-3.6				  
+    __INST python3.6
 
     #Numix theme
     __ADDREP ppa:numix/ppa                              
