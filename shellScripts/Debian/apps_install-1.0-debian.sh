@@ -152,7 +152,7 @@ enginnering(){
 
     #Postgresql Server and Client
     __INST pgadmin3 postgresql postgresql-contrib           
-    apt-cache search postgres             
+    #apt-cache search postgres
     #Postgresql Server configuration steps:
         #1) sudo -u postgres psql postgres  #Connect to db postgres via psql as user postgres
         #2) \password postgres              #Change pass for postgres user
