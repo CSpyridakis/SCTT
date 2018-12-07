@@ -36,17 +36,17 @@ helpMenu(){
     echo "Install some of my favorites (and in my personal point of view usefull) applications in a Debian based system"
     echo 
     echo "-c, --content 			video and photo editing programs"
-	echo "-d, --develop 			code developing applications"
-	echo "-e, --enginnering 		some enginnering tools"
-	echo "-f, --files 			file managers etc..."
-	echo "-g, --games 			some linux games"
-	echo "-h, --help 			show this help page"
-	echo "-m, --media 			media players (music, video, etc...)"
-	echo "-n, --net 			browsers and social apps"
-	echo "-p, --pentest 			some penetration testing tools"
-	echo "-s, --system 			system tools"
-	echo "-F, --Full 			install all applications"
-	echo "-L, --Light 			install only basic tools"
+    echo "-d, --develop 			code developing applications"
+    echo "-e, --enginnering 		some enginnering tools"
+    echo "-f, --files 			file managers etc..."
+    echo "-g, --games 			some linux games"
+    echo "-h, --help 			show this help page"
+    echo "-m, --media 			media players (music, video, etc...)"
+    echo "-n, --net 			browsers and social apps"
+    echo "-p, --pentest 			some penetration testing tools"
+    echo "-s, --system 			system tools"
+    echo "-F, --Full 			install all applications"
+    echo "-L, --Light 			install only basic tools"
 }
 
 #Install app 
@@ -183,6 +183,7 @@ games(){
 media(){
     __INST vlc browser-plugin-vlc                      #VLC player
     __INST tomahawk                                    #Music player
+    __INST easytag                                     #Tags editing tool for audio/video files
     #__INST clementine                                 #Music player
 
     #KODI media center
