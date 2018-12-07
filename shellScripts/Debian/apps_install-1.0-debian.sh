@@ -5,6 +5,7 @@
 #
 #   Author : Spyridakis Christos
 #   Create Date : 3/05/2017
+#   Last Update : 7/12/2018
 #   Email : spyridakischristos@gmail.com
 #
 #
@@ -79,7 +80,7 @@ __UPD(){
 }
 
 __GET(){
-
+	echo TODO
 }
 
 #Print some interesting informations at the end
@@ -110,7 +111,7 @@ __INFO(){
 
 contentCreate(){
     __INST blender                                    #3D modeling tool
-    #__INST Kdenlive                                  #Video Editing Software
+    #__INST kdenlive                                  #Video Editing Software
     #__INST krita                                     #Photo Editing Software
 
     #Gimp - Photo Editing Software
@@ -135,7 +136,7 @@ enginnering(){
     __INST filezilla                                   #File transfer application
     __INST arduino arduino-core                        #Arduino IDE
     __INST virtualbox                                  #Virtual Machine
-    __INST phpmyadmin
+    __INST phpmyadmin                                  #Administration tool for MySQL and MariaDB
     #__INST logisim                                    #logic circuits design
     #__INST eagle                                      #Schematics and pcb design tool
     #__INST fritzing                                   #Schematics and pcb design tool
@@ -226,7 +227,10 @@ system(){
     __INST gnome-system-monitor                       #System Monitor
     __INST unity-tweak-tool                           #GUI customization tool
     __INST gnome-tweak-tool                           #GUI customization tool
-    
+    __INST clamav clamtk                              #Open source antivirus engine with GUI
+    __INST indicator-keylock                          #Num/Caps lock indicator
+    __INST tmux                                       #Terminal multiplexer
+
     #__INST xsensors lm-sensors                       #Sensors (Use $sensors-detect)
     #__INST openjdk-8-jdk
     #__INST wallch                                    #Wallpaper Clock
