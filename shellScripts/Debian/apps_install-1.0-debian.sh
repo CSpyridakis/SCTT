@@ -113,6 +113,7 @@ contentCreate(){
     __INST blender                                    #3D modeling tool
     #__INST kdenlive                                  #Video Editing Software
     #__INST krita                                     #Photo Editing Software
+    #__INST kazam                                     #Screencasting program
 
     #Gimp - Photo Editing Software
     __ADDREP ppa:otto-kesselgulasch/gimp
@@ -205,6 +206,8 @@ pentest(){
     __INST zenmap                                      #GUI Network mapping tool
     __INST john                                        #Decrypt passwords, hashes etc...  
     __INST macchanger                                  #Change Mac address
+    __INST bless                                       #Hex editor
+    __INST steghide                                    #Steganography program
     __INST cmatrix                                     #Just for fun xD, matrix style on terminal
 }
 
