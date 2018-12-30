@@ -166,6 +166,8 @@ files(){
     __INST qbittorrent								   #Torrent client
     #__INST dolphin                                    #File Browser
     #__INST bluefish                                   #Text editor
+    __INST evince                                      #Pdf viewer
+    __INST xournal                                     #Pdf note taking
 
     #Sublime text editor
     __ADDREP ppa:webupd8team/sublime-text-3              
