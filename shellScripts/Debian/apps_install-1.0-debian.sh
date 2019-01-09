@@ -236,6 +236,10 @@ system(){
     __INST clamav clamtk                              #Open source antivirus engine with GUI
     __INST indicator-keylock                          #Num/Caps lock indicator
     __INST tmux                                       #Terminal multiplexer
+    
+    #Compiz Settings Manager
+    __INST compizconfig-settings-manager 
+    __INST compiz-plugins-extra
 
     #__INST xsensors lm-sensors                       #Sensors (Use $sensors-detect)
     #__INST openjdk-8-jdk
