@@ -237,6 +237,11 @@ system(){
     __INST indicator-keylock                          #Num/Caps lock indicator
     __INST tmux                                       #Terminal multiplexer
     
+    #Mapping extra mouse for Mx Master 2s on Linux
+    #More info here: 
+    #https://wiki.archlinux.org/index.php/Logitech_MX_Master?fbclid=IwAR0o3Tc3F7rpyLLFS834RhIIcE12KP9AuqUCkMZroTe7cZn2UWru7vKNKc8
+    __INST xbindkeys xautomation                       
+
     #Compiz Settings Manager
     __INST compizconfig-settings-manager 
     __INST compiz-plugins-extra
