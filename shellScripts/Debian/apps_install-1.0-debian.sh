@@ -174,6 +174,13 @@ files(){
     __INST sublime-text-installer
     #__INST subliminal
 
+    #LaTex
+    __INST texlive-full                                #Full
+    #__INST texlive texlive-base                        #Light
+
+    #LaTex Editor
+    __INST texmaker
+
     #Atom text editor
     __ADDREP ppa:webupd8team/atom                        
     __INST atom
