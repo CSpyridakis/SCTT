@@ -1,29 +1,49 @@
-#!/bin/sh
+#!/bin/bash
 #####################################################################################################################
 #
 #   apps_install-1.0-debian.sh
 #
 #   Author : Spyridakis Christos
 #   Create Date : 3/05/2017
-#   Last Update : 7/12/2018
+#   Last Update : 18/2/2019
 #   Email : spyridakischristos@gmail.com
 #
 #
-#   Description : Install some of my favorites (and in my personal point of view usefull) applications in a 
-#			Debian based system (Tested on Ubuntu Unity 16.04). This script is free software ; please make
-#			sure to read the manual of each application before install or use it. I am not responsible for 
-#			any damage  
+#   Description : Install some of my favorite (and in my personal point of view usefull) applications in a 
+#			Debian based system (Tested on Ubuntu Unity 16.04). This script is free and open source software ; 
+#			please make sure to read the manual of each application before install or use it. I am not responsible  
+#			for any damage  
 #
 #
 #   Additional Comments: 
 #			1)For some Applications, their description is based on official application's description 
-#			2)There are the following main "functions" :
+#			2)The following functions are implemented:
 #					a) __ADDREP - Use it in order to execute command "sudo add-apt-repository -y" and afterwards update system
 #					b) __INST - Use it in order to execute command "sudo apt-get -y install"
 #					c) __GET - TODO: Download applications from official site
+#                   d) __START - TODO: Appends an entry on crontab in order to start with system
+#
+#
 #
 ####################################################################################################################
 
+#---------------------------------------------------
+#-------------------   IMPORTANT -------------------
+#---------------------------------------------------
+#
+#If you use #!/bin/bash uncomment the following line
+implementation='bash'
+
+#If you use #!/bin/sh uncomment the following line
+#implementation='sh'
+#---------------------------------------------------
+
+if [ ${implementation} = "bash" ] ; then
+    declare -a comletedApps
+    declare -a failedApps
+fi
+
+#Color changing variables
 red=`tput setaf 1`
 green=`tput setaf 2`
 yellow=`tput setaf 3`
@@ -33,27 +53,35 @@ helpMenu(){
     echo "Usage: $0 [Option]... [Option]... "
     echo "Usage: $0 -F"
     echo "Usage: $0 -L [Option]... [Option]... "
-    echo "Install some of my favorites (and in my personal point of view usefull) applications in a Debian based system"
+    echo "Install some of my favorite (and in my personal point of view usefull) applications in a Debian based system"
     echo 
-    echo "-c, --content 			video and photo editing programs"
-    echo "-d, --develop 			code developing applications"
-    echo "-e, --enginnering 		some enginnering tools"
-    echo "-f, --files 			file managers etc..."
-    echo "-g, --games 			some linux games"
-    echo "-h, --help 			show this help page"
-    echo "-m, --media 			media players (music, video, etc...)"
-    echo "-n, --net 			browsers and social apps"
-    echo "-p, --pentest 			some penetration testing tools"
-    echo "-s, --system 			system tools"
-    echo "-F, --Full 			install all applications"
-    echo "-L, --Light 			install only basic tools"
+    echo "-c, --content             video and photo editing programs"
+    echo "-d, --develop             code developing applications"
+    echo "-e, --enginnering         some enginnering tools"
+    echo "-f, --files               file related applications. E.g. managers etc..."
+    echo "-g, --games               some linux games"
+    echo "-h, --help                show this help page"
+    echo "-m, --media               media players (music, video, etc...)"
+    echo "-n, --net                 browsers and social apps"
+    echo "-p, --pentest             some penetration testing tools"
+    echo "-l, --peripheral          peripheral managers and applications"
+    echo "-s, --system              system tools"
+    echo "-w, --web                 web related tools"
+    echo "-F, --Full                install all applications"
+    echo "-L, --Light               install only basic tools"
 }
 
 #Install app 
 __INST(){
 	for app in "$@" 
-	do
-		sudo apt-get -y install ${app} || echo && echo "${app} : ${red}Installation FAILED${reset}"
+	do 
+        echo "Try to install: ${yellow} ${app} ${reset}" 
+        if [ ${implementation} = "bash" ] ; then
+            sudo apt-get -y install ${app} && comletedApps+=("${app}") || failedApps+=("${app}")
+        else 
+            sudo apt-get -y install ${app} && echo "${app} : ${green}Installation COMPLETED${reset}" || echo "${app} : ${red}Installation FAILED${reset}"
+        fi
+        echo
 	done
 }
 
@@ -79,26 +107,50 @@ __UPD(){
     #echo "Update"
 }
 
+#Appends an entry on crontab in order to start with system
+__STARTUP(){
+    echo TODO
+}
+
 __GET(){
 	echo TODO
 }
 
 #Print some interesting informations at the end
 __INFO(){
-	echo "${yellow}SCRIPT RESULTS:${reset}"
 
-	#TODO: print applications with 
-	#Installation Error 
-	#if [[ ${#array[@]} > 0 ]]
-	#then 
-	#	echo "There is a problem with the installation of the following tools"
-	#	for app in "${array[@]}"
-	#	do
-    #		echo "$app"
-	#	done
-	#fi
+    if [ ${implementation} = "bash" ] ; then 
+        echo
+        echo "${yellow}--------------------------------"
+        echo "         SCRIPT RESULTS:"
+        echo "--------------------------------${reset}"
+    
+        if [ ${#comletedApps[*]} -ne 0 ] ; then
+            echo 
+            echo " ${green}Successfully Installed Applications:${reset}"
+            
+            for app in ${comletedApps[@]}
+            do
+                echo "- ${app}" 
+            done
+        fi
+        
+        if [ ${#failedApps[*]} -ne 0 ]; then
+            echo
+            echo " ${red}There is a problem with the installation" 
+            echo " of the following applications:${reset}"
+            
+            for app in ${failedApps[@]}
+            do
+                echo "- ${app}" 
+            done
+        fi 
+        echo
+    fi
 
-	echo "Installation Completed! You may want to install also:"
+	echo "${green}Installation Completed!${reset}"
+    echo "You may want to install also:"
+    echo 
 	echo "1) Teamviewer"
 	echo "2) Xampp or/and Tomcat"
 	echo "3) Vmware"
@@ -134,7 +186,6 @@ codeDeveloping(){
 }
 
 enginnering(){
-    __INST filezilla                                   #File transfer application
     __INST arduino arduino-core                        #Arduino IDE
     __INST virtualbox                                  #Virtual Machine
     __INST phpmyadmin                                  #Administration tool for MySQL and MariaDB
@@ -220,6 +271,21 @@ pentest(){
     __INST cmatrix                                     #Just for fun xD, matrix style on terminal
 }
 
+peripheral(){
+    #Mapping extra mouse and keyboard actions
+    #E.g. using MX Master 2S: 
+    #https://wiki.archlinux.org/index.php/Logitech_MX_Master?fbclid=IwAR0o3Tc3F7rpyLLFS834RhIIcE12KP9AuqUCkMZroTe7cZn2UWru7vKNKc8
+    __INST xbindkeys xautomation                       
+
+    __INST solaar                                    #Logitech Unifying Receiver peripherals manager for Linux 
+}
+
+#If you want to start on boot some applications just use this function
+#As a matter of fact, this function uses __START which just appends an entry on crontab
+startOnBoot(){
+    echo TODO
+}
+
 system(){
     #sudo apt-get remove unity-lens-shopping          #Unity Dash search remove
     __INST software-properties-common                 #Extra softwate packages install
@@ -228,7 +294,6 @@ system(){
     __INST htop                                       #Interactive process viewer
     __INST synergy                                    #Mouse and Keyboard sharing Software
     __INST dconf-tools                                #Low-level configuration system for GSettings
-    __INST evince                                     #Pdf viewer 
     __INST expect                                     #Automate events using expected words tool
     __INST hardinfo                                   #System usefull informations
     __INST openvpn                                    #VPN configuring                         
@@ -238,17 +303,12 @@ system(){
     __INST indicator-multiload                        #Graphical system load indicator for CPU, ram, etc
     __INST alarm-clock-applet                         #Alarm clock 
     __INST gnome-system-monitor                       #System Monitor
-    __INST unity-tweak-tool                           #GUI customization tool
-    __INST gnome-tweak-tool                           #GUI customization tool
+    #__INST unity-tweak-tool                           #Unity GUI customization tool
+    #__INST gnome-tweak-tool                           #Gnome GUI customization tool
     __INST clamav clamtk                              #Open source antivirus engine with GUI
     __INST indicator-keylock                          #Num/Caps lock indicator
     __INST tmux                                       #Terminal multiplexer
     
-    #Mapping extra mouse for Mx Master 2s on Linux
-    #More info here: 
-    #https://wiki.archlinux.org/index.php/Logitech_MX_Master?fbclid=IwAR0o3Tc3F7rpyLLFS834RhIIcE12KP9AuqUCkMZroTe7cZn2UWru7vKNKc8
-    __INST xbindkeys xautomation                       
-
     #Compiz Settings Manager
     __INST compizconfig-settings-manager 
     __INST compiz-plugins-extra
@@ -259,10 +319,6 @@ system(){
     #__INST kazam									  #Screen recording
     #__INST bacula									  #Backup System
 
-    #Download manager
-    #__ADDREP ppa:plushuang-tw/uget-stable
-    #__INST uget
-    
 	#Python 3.6
     __ADDREP ppa:jonathonf/python-3.6				  
     __INST python3.6
@@ -272,26 +328,36 @@ system(){
     __INST numix-gtk-theme numix-icon-theme-circle numix-wallpaper-notd
 }
 
+web(){
+    #Download manager
+    #__ADDREP ppa:plushuang-tw/uget-stable
+    #__INST uget
+
+    __INST filezilla                                   #File transfer application
+}
+
 full(){
 	contentCreate 
 	codeDeveloping 
 	enginnering 
 	files 
 	games
-	helpMenu 
 	media 
 	net 
 	pentest
+    peripheral
 	system 
+    web
+    startOnBoot
 }
 
 light(){
 	files
 	media
 	net
+    peripheral
 	system
 }
-
 
 #MAIN
 while :
@@ -306,7 +372,9 @@ do
         -m | --media)       __UPDG ; media ;           shift ;;
         -n | --net)         __UPDG ; net ;             shift ;;
         -p | --pentest)     __UPDG ; pentest ;         shift ;;
+        -l | --peripheral)  __UPDG ; peripheral;       shift ;;
         -s | --system)      __UPDG ; system ;          shift ;;
+        -w | --web)         __UPDG ; web ;             shift ;;
 
         -F | --Full)        __UPDG ; full ; break ;; 
 
