@@ -64,7 +64,7 @@ helpMenu(){
     echo "-h, --help                show this help page"
     echo "-m, --media               media players (music, video, etc...)"
     echo "-n, --net                 browsers and social apps"
-    echo "-o, --onboot              "
+    echo "-o, --onboot              create desktop entries on ~/.config/autostart"
     echo "-p, --pentest             some penetration testing tools"
     echo "-l, --peripheral          peripheral managers and applications"
     echo "-s, --system              system tools"
@@ -133,8 +133,7 @@ __START(){
             -gt  )  entry+="X-GNOME-Autostart-enabled=true\n"  ; shift;;
 
             -*)
-                echo "Unknown option: $1" >&2
-                helpMenu
+                echo "Unknown option: $1 on function __START" >&2
                 exit 1 
                 ;;
             *) 
@@ -328,11 +327,11 @@ startOnBoot(){
     __START -n 'Num_Caps-lock' -e 'indicator-keylock' -hf -ndf -gt                   
     __START -n 'Parcellite' -e 'bash -c "parcellite &"' -c 'Clipboard Manager' -i 'parcellite' -tf -gt               
     __START -n 'Psensor' -e 'psensor' -hf -ndf -gt                                
-    __START -n 'Skype' -e '/usr/bin/skypeforlinux' -i 'skypeforlinux' -tf -sf -gt                 
-    __START -n 'synergy' -e 'synergy' -hf -ndf -gt                               
+    #__START -n 'Skype' -e '/usr/bin/skypeforlinux' -i 'skypeforlinux' -tf -sf -gt                 
+    #__START -n 'synergy' -e 'synergy' -hf -ndf -gt                               
     __START -n 'System-load-indicator' -e 'indicator-multiload' -i 'utilities-system-monitor' -tf -gt                   
     __START -n 'Viber' -e '/opt/viber/Viber' -hf -ndf -gt                       
-    __START -n 'xbindkeys' -e 'xbindkeys' -ht -ndf -gt 
+    #__START -n 'xbindkeys' -e 'xbindkeys' -ht -ndf -gt 
 
     __START -n 'Firefox' -e 'firefox %u' -tf -i 'firefox'                              
 }
