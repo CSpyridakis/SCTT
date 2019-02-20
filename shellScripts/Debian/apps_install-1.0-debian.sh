@@ -22,7 +22,7 @@
 #           a) __ADDREP - Use it in order to execute command "sudo add-apt-repository -y" and afterwards update system
 #           b) __INST - Use it in order to execute command "sudo apt-get -y install"
 #           c) __GET - TODO: Download applications from official site
-#           d) __START - TODO: Appends an entry on crontab in order to start with system
+#           d) __START - Creates a desktop entry on ~/.config/autostart
 #
 #
 #
@@ -106,23 +106,31 @@ __UPD(){
     sudo apt-get -y update --fix-missing
 }
 
-#Appends an entry on start up applications
+#Creates a desktop entry on ~/.config/autostart
 __START(){
     entry="[Desktop Entry]\n"
     entry+="Type=Application\n"
+    nameT=""
+    execT=""
+    commentT=""
 
     while :
     do
         case "$1" in
-            -n )  nameT=${2}                    ; shift ; shift;;
-            -e )  execT=${2}                    ; shift ; shift;;
-            -i )  entry+="Icon=${2}\n"          ; shift ; shift;;
-            -c )  commentT=${2}                 ; shift ; shift;;
-            -d )  entry+="NoDisplay=${2}\n"     ; shift ; shift;;
-            -h )  entry+="Hidden=${2}\n"        ; shift ; shift;;
-            -t )  entry+="Terminal=${2}\n"      ; shift ; shift;;
-            -s )  entry+="StartupNotify=${2}\n" ; shift ; shift;;
-            -g )  entry+="X-GNOME-Autostart-enabled=${2}\n" ; shift ; shift;;
+            -n   )  nameT=${2}                    ; shift ; shift;;
+            -e   )  execT=${2}                    ; shift ; shift;;
+            -c   )  commentT=${2}                 ; shift ; shift;;
+            -i   )  entry+="Icon=${2}\n"          ; shift ; shift;;
+            -ndf )  entry+="NoDisplay=false\n"    ; shift;;
+            -ndt )  entry+="NoDisplay=true\n"     ; shift;;
+            -hf  )  entry+="Hidden=false\n"       ; shift;;
+            -ht  )  entry+="Hidden=true\n"        ; shift;;
+            -tf  )  entry+="Terminal=false\n"     ; shift;;
+            -tt  )  entry+="Terminal=true\n"      ; shift;;
+            -sf  )  entry+="StartupNotify=false\n"; shift;;
+            -st  )  entry+="StartupNotify=true\n" ; shift;;
+            -gf  )  entry+="X-GNOME-Autostart-enabled=false\n" ; shift;;
+            -gt  )  entry+="X-GNOME-Autostart-enabled=true\n"  ; shift;;
 
             -*)
                 echo "Unknown option: $1" >&2
@@ -138,7 +146,7 @@ __START(){
     entry+="Exec=${execT}\n"
     entry+="Comment=${commentT}\n"
 
-    echo -e ${entry} 
+    echo -e ${entry} > ~/.config/autostart/${nameT}.desktop
 }
 
 __GET(){
@@ -310,19 +318,23 @@ peripheral(){
 }
 
 #If you want to start on boot some applications just use this function
-#As a matter of fact, this function uses __START which just appends : TODO
+#As a matter of fact, this function uses __START which just xreates desktop 
+#entries on ~/.config/autostart directory
 startOnBoot(){
-    # __START -n 'Alarm Clock' -e 'alarm-clock-applet --hidden'                
-    # __START -n 'Caffeine' -e '/usr/bin/caffeine'                       
-    # __START -n 'Caffeine' -e 'caffeine-indicator'                     
-    # __START -n 'Num/Caps lock indicator' -e 'indicator-keylock'                      
-    # __START -n 'Parcellite' -e 'bash -c "parcellite &"'                 
-    # __START -n 'Psensor' -e 'psensor'                                
-    # __START -n 'Skype' -e '/usr/bin/skypeforlinux'                 
-    # __START -n 'Synergy' -e 'synergy'                                
-    # __START -n 'System load indicator' -e 'indicator-multiload'                    
-    # __START -n 'Viber' -e '/opt/viber/Viber'                       
-    __START -n 'Xbindkeys' -h 'true' -d 'false' -g 'true' -e 'xbindkeys'                              
+    __START -n 'Alarm-Clock' -e 'alarm-clock-applet --hidden'                
+    __START -n 'Caffeine' -e '/usr/bin/caffeine'  
+
+    __START -n 'caffeine-indicator' -e 'caffeine-indicator' -hf -ndf -gt                    
+    __START -n 'Num_Caps-lock' -e 'indicator-keylock' -hf -ndf -gt                   
+    __START -n 'Parcellite' -e 'bash -c "parcellite &"' -c 'Clipboard Manager' -i 'parcellite' -tf -gt               
+    __START -n 'Psensor' -e 'psensor' -hf -ndf -gt                                
+    __START -n 'Skype' -e '/usr/bin/skypeforlinux' -i 'skypeforlinux' -tf -sf -gt                 
+    __START -n 'synergy' -e 'synergy' -hf -ndf -gt                               
+    __START -n 'System-load-indicator' -e 'indicator-multiload' -i 'utilities-system-monitor' -tf -gt                   
+    __START -n 'Viber' -e '/opt/viber/Viber' -hf -ndf -gt                       
+    __START -n 'xbindkeys' -e 'xbindkeys' -ht -ndf -gt 
+
+    __START -n 'Firefox' -e 'firefox %u' -tf -i 'firefox'                              
 }
 
 system(){
@@ -387,7 +399,7 @@ full(){
     peripheral
     system 
     web
-    startOnBoot
+    #startOnBoot
 }
 
 light(){
