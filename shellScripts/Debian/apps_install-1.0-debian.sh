@@ -5,40 +5,41 @@
 #
 #   Author : Spyridakis Christos
 #   Create Date : 3/05/2017
-#   Last Update : 18/2/2019
+#   Last Update : 20/2/2019
 #   Email : spyridakischristos@gmail.com
 #
 #
-#   Description : Install some of my favorite (and in my personal point of view usefull) applications in a 
-#			Debian based system (Tested on Ubuntu Unity 16.04). This script is free and open source software ; 
-#			please make sure to read the manual of each application before install or use it. I am not responsible  
-#			for any damage  
+#   Description : 
+#       Install some of my favorite (and in my personal point of view usefull) applications in a Debian
+#       based system (Tested on Ubuntu Unity 16.04). This script is free and open source software ; please
+#       make sure to read the manual of each application before install or use it. I am not responsible  
+#       for any damage  
 #
 #
 #   Additional Comments: 
-#			1)For some Applications, their description is based on official application's description 
-#			2)The following functions are implemented:
-#					a) __ADDREP - Use it in order to execute command "sudo add-apt-repository -y" and afterwards update system
-#					b) __INST - Use it in order to execute command "sudo apt-get -y install"
-#					c) __GET - TODO: Download applications from official site
-#                   d) __START - TODO: Appends an entry on crontab in order to start with system
+#       1)For some Applications, their description is based on official application's description 
+#       2)The following functions are implemented:
+#           a) __ADDREP - Use it in order to execute command "sudo add-apt-repository -y" and afterwards update system
+#           b) __INST - Use it in order to execute command "sudo apt-get -y install"
+#           c) __GET - TODO: Download applications from official site
+#           d) __START - TODO: Appends an entry on crontab in order to start with system
 #
 #
 #
 ####################################################################################################################
 
-#---------------------------------------------------
-#-------------------   IMPORTANT -------------------
-#---------------------------------------------------
-#
-#If you use #!/bin/bash uncomment the following line
-implementation='bash'
+interpreter='bash'
 
-#If you use #!/bin/sh uncomment the following line
-#implementation='sh'
-#---------------------------------------------------
+#-----------------------------------------------------------
+#-----------------------   IMPORTANT -----------------------
+#-----------------------------------------------------------
+# If you need to use #!/bin/sh uncomment the following line
 
-if [ ${implementation} = "bash" ] ; then
+#interpreter='sh'
+
+#-----------------------------------------------------------
+
+if [ ${interpreter} = "bash" ] ; then
     declare -a comletedApps
     declare -a failedApps
 fi
@@ -63,6 +64,7 @@ helpMenu(){
     echo "-h, --help                show this help page"
     echo "-m, --media               media players (music, video, etc...)"
     echo "-n, --net                 browsers and social apps"
+    echo "-o, --onboot              "
     echo "-p, --pentest             some penetration testing tools"
     echo "-l, --peripheral          peripheral managers and applications"
     echo "-s, --system              system tools"
@@ -73,23 +75,22 @@ helpMenu(){
 
 #Install app 
 __INST(){
-	for app in "$@" 
-	do 
+    for app in "$@" 
+    do 
         echo "Try to install: ${yellow} ${app} ${reset}" 
-        if [ ${implementation} = "bash" ] ; then
+        if [ ${interpreter} = "bash" ] ; then
             sudo apt-get -y install ${app} && comletedApps+=("${app}") || failedApps+=("${app}")
         else 
             sudo apt-get -y install ${app} && echo "${app} : ${green}Installation COMPLETED${reset}" || echo "${app} : ${red}Installation FAILED${reset}"
         fi
         echo
-	done
+    done
 }
 
 #Add repository
 __ADDREP(){
-	sudo add-apt-repository -y ${1}
-	sudo apt-get -y update --fix-missing
-	#echo "Repo added"
+    sudo add-apt-repository -y ${1}
+    sudo apt-get -y update --fix-missing
 }
 
 #Update and upgrade system
@@ -98,28 +99,56 @@ __UPDG(){
     sudo apt-get -y upgrade 
     sudo apt-get -y autoclean
     sudo apt-get -y autoremove
-    #echo "System update and upgrade completed!"
 }
 
 #Update system
-__UPD(){  
+__UPD(){
     sudo apt-get -y update --fix-missing
-    #echo "Update"
 }
 
-#Appends an entry on crontab in order to start with system
-__STARTUP(){
-    echo TODO
+#Appends an entry on start up applications
+__START(){
+    entry="[Desktop Entry]\n"
+    entry+="Type=Application\n"
+
+    while :
+    do
+        case "$1" in
+            -n )  nameT=${2}                    ; shift ; shift;;
+            -e )  execT=${2}                    ; shift ; shift;;
+            -i )  entry+="Icon=${2}\n"          ; shift ; shift;;
+            -c )  commentT=${2}                 ; shift ; shift;;
+            -d )  entry+="NoDisplay=${2}\n"     ; shift ; shift;;
+            -h )  entry+="Hidden=${2}\n"        ; shift ; shift;;
+            -t )  entry+="Terminal=${2}\n"      ; shift ; shift;;
+            -s )  entry+="StartupNotify=${2}\n" ; shift ; shift;;
+            -g )  entry+="X-GNOME-Autostart-enabled=${2}\n" ; shift ; shift;;
+
+            -*)
+                echo "Unknown option: $1" >&2
+                helpMenu
+                exit 1 
+                ;;
+            *) 
+                break
+        esac
+    done
+
+    entry+="Name=${nameT}\n"
+    entry+="Exec=${execT}\n"
+    entry+="Comment=${commentT}\n"
+
+    echo -e ${entry} 
 }
 
 __GET(){
-	echo TODO
+    echo TODO
 }
 
 #Print some interesting informations at the end
 __INFO(){
 
-    if [ ${implementation} = "bash" ] ; then 
+    if [ ${interpreter} = "bash" ] ; then 
         echo
         echo "${yellow}--------------------------------"
         echo "         SCRIPT RESULTS:"
@@ -148,17 +177,17 @@ __INFO(){
         echo
     fi
 
-	echo "${green}Installation Completed!${reset}"
+    echo "${green}Installation Completed!${reset}"
     echo "You may want to install also:"
     echo 
-	echo "1) Teamviewer"
-	echo "2) Xampp or/and Tomcat"
-	echo "3) Vmware"
-	echo "4) Android Studio"
-	echo "5) IDEs of Jetbrains"
-	echo "6) Slack"
-	echo "7) VNC"
-	echo "8) Viber"
+    echo "1) Teamviewer"
+    echo "2) Xampp or/and Tomcat"
+    echo "3) Vmware"
+    echo "4) Android Studio"
+    echo "5) IDEs of Jetbrains"
+    echo "6) Slack"
+    echo "7) VNC"
+    echo "8) Viber"
 }
 
 contentCreate(){
@@ -281,9 +310,19 @@ peripheral(){
 }
 
 #If you want to start on boot some applications just use this function
-#As a matter of fact, this function uses __START which just appends an entry on crontab
+#As a matter of fact, this function uses __START which just appends : TODO
 startOnBoot(){
-    echo TODO
+    # __START -n 'Alarm Clock' -e 'alarm-clock-applet --hidden'                
+    # __START -n 'Caffeine' -e '/usr/bin/caffeine'                       
+    # __START -n 'Caffeine' -e 'caffeine-indicator'                     
+    # __START -n 'Num/Caps lock indicator' -e 'indicator-keylock'                      
+    # __START -n 'Parcellite' -e 'bash -c "parcellite &"'                 
+    # __START -n 'Psensor' -e 'psensor'                                
+    # __START -n 'Skype' -e '/usr/bin/skypeforlinux'                 
+    # __START -n 'Synergy' -e 'synergy'                                
+    # __START -n 'System load indicator' -e 'indicator-multiload'                    
+    # __START -n 'Viber' -e '/opt/viber/Viber'                       
+    __START -n 'Xbindkeys' -h 'true' -d 'false' -g 'true' -e 'xbindkeys'                              
 }
 
 system(){
@@ -319,7 +358,7 @@ system(){
     #__INST kazam									  #Screen recording
     #__INST bacula									  #Backup System
 
-	#Python 3.6
+    #Python 3.6
     __ADDREP ppa:jonathonf/python-3.6				  
     __INST python3.6
 
@@ -337,33 +376,33 @@ web(){
 }
 
 full(){
-	contentCreate 
-	codeDeveloping 
-	enginnering 
-	files 
-	games
-	media 
-	net 
-	pentest
+    contentCreate 
+    codeDeveloping 
+    enginnering 
+    files 
+    games
+    media 
+    net 
+    pentest
     peripheral
-	system 
+    system 
     web
     startOnBoot
 }
 
 light(){
-	files
-	media
-	net
+    files
+    media
+    net
     peripheral
-	system
+    system
 }
 
 #MAIN
 while :
 do
     case "$1" in
-        -c | --content) 	__UPDG ; contentCreate ;   shift ;;
+        -c | --content)     __UPDG ; contentCreate ;   shift ;;
         -d | --develop)     __UPDG ; codeDeveloping ;  shift ;;
         -e | --enginnering) __UPDG ; enginnering ;     shift ;;
         -f | --files)       __UPDG ; files ;           shift ;;
@@ -371,6 +410,7 @@ do
         -h | --help)        	     helpMenu ;        exit 0;;
         -m | --media)       __UPDG ; media ;           shift ;;
         -n | --net)         __UPDG ; net ;             shift ;;
+        -o | --onboot)               startOnBoot;      exit 0;;
         -p | --pentest)     __UPDG ; pentest ;         shift ;;
         -l | --peripheral)  __UPDG ; peripheral;       shift ;;
         -s | --system)      __UPDG ; system ;          shift ;;
