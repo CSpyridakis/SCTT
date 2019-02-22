@@ -358,7 +358,8 @@ system(){
     __INST clamav clamtk                              #Open source antivirus engine with GUI
     __INST indicator-keylock                          #Num/Caps lock indicator
     __INST tmux                                       #Terminal multiplexer
-    
+    __INST exfat-fuse exfat-utils                     #Mount exfat file system
+
     #Compiz Settings Manager
     __INST compizconfig-settings-manager 
     __INST compiz-plugins-extra
