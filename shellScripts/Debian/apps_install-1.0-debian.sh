@@ -5,7 +5,7 @@
 #
 #   Author : Spyridakis Christos
 #   Create Date : 3/05/2017
-#   Last Update : 20/2/2019
+#   Last Update : 5/3/2019
 #   Email : spyridakischristos@gmail.com
 #
 #
@@ -275,6 +275,11 @@ files(){
 
 games(){
     __INST hedgewars                                   #Worms game
+
+    # This is not actually a game, fortune  
+    # is a program that displays a random 
+    # message from a database of quotations
+    __INST fortune-mod
 }
 
 media(){
@@ -305,6 +310,7 @@ pentest(){
     __INST bless                                       #Hex editor
     __INST steghide                                    #Steganography program
     __INST cmatrix                                     #Just for fun xD, matrix style on terminal
+    __INST traceroute                                  #Displays the route used by IP packets
 }
 
 peripheral(){
@@ -324,7 +330,7 @@ startOnBoot(){
     __START -n 'Caffeine' -e '/usr/bin/caffeine'  
 
     __START -n 'caffeine-indicator' -e 'caffeine-indicator' -hf -ndf -gt                    
-    __START -n 'Num_Caps-lock' -e 'indicator-keylock' -hf -ndf -gt                   
+    #__START -n 'Num_Caps-lock' -e 'indicator-keylock' -hf -ndf -gt                   
     __START -n 'Parcellite' -e 'bash -c "parcellite &"' -c 'Clipboard Manager' -i 'parcellite' -tf -gt               
     __START -n 'Psensor' -e 'psensor' -hf -ndf -gt                                
     #__START -n 'Skype' -e '/usr/bin/skypeforlinux' -i 'skypeforlinux' -tf -sf -gt                 
@@ -333,7 +339,7 @@ startOnBoot(){
     __START -n 'Viber' -e '/opt/viber/Viber' -hf -ndf -gt                       
     #__START -n 'xbindkeys' -e 'xbindkeys' -ht -ndf -gt 
 
-    __START -n 'Firefox' -e 'firefox %u' -tf -i 'firefox'                              
+    __START -n 'Firefox' -e 'firefox' -tf -i 'firefox'                              
 }
 
 system(){
