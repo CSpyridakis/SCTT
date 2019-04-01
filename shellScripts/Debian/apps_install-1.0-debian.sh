@@ -10,20 +10,20 @@
 #
 #
 #   Description : 
-#       Install some of my favorite (and in my personal point of view usefull) applications in a Debian
+#       Install some of my favorite (and in my personal point of view useful) applications in a Debian-
 #       based system (Tested on Ubuntu Unity 16.04). This script is free and open source software ; please
 #       make sure to read the documentation of each application before install or use it. I am not responsible  
 #       for any damage  
 #
 #
 #   Additional Comments: 
-#       1)For some Applications, their description is based on official application's description 
-#       2)The following functions are implemented:
+#       1) For some Applications, their description is based on official application's description 
+#       2) The following functions are implemented:
 #           a) __ADDREP - Use it in order to execute command "sudo add-apt-repository -y" and afterwards update system
 #           b) __INST - Use it in order to execute command "sudo apt-get -y install"
-#           c) __GET - TODO: Download applications from official site
+#           c) __GET - TODO: Download application from official site
 #           d) __START - Creates a desktop entry on ~/.config/autostart
-#
+#       3) Uncomment or comment out applications in order to personalize script behaviour
 #
 #
 ####################################################################################################################
@@ -54,26 +54,26 @@ helpMenu(){
     echo "Usage: $0 [Option]... [Option]... "
     echo "Usage: $0 -F"
     echo "Usage: $0 -L [Option]... [Option]... "
-    echo "Install some of my favorite (and in my personal point of view usefull) applications in a Debian based system"
+    echo "Install some of my favorite (and from my point of view, useful) applications on a Debian-based system"
     echo 
     echo "-c, --content             video and photo editing programs"
-    echo "-d, --develop             code developing applications"
-    echo "-e, --enginnering         some enginnering tools"
-    echo "-f, --files               file related applications. E.g. managers etc..."
-    echo "-g, --games               some linux games"
+    echo "-d, --develop             IDEs and editors"
+    echo "-e, --engineering         tools for engineers"
+    echo "-f, --files               file managers, editors etc..."
+    echo "-g, --games               linux games"
     echo "-h, --help                show this help page"
     echo "-m, --media               media players (music, video, etc...)"
-    echo "-n, --net                 browsers and social apps"
+    echo "-n, --net                 browsers"
     echo "-o, --onboot              create desktop entries on ~/.config/autostart"
     echo "-p, --pentest             some penetration testing tools"
-    echo "-l, --peripheral          peripheral managers and applications"
+    echo "-l, --peripheral          peripheral device management services"
     echo "-s, --system              system tools"
-    echo "-w, --web                 web related tools"
-    echo "-F, --Full                install all applications"
-    echo "-L, --Light               install only basic tools"
+    echo "-w, --web                 web related software"
+    echo "-F, --Full                complete installation"
+    echo "-L, --Light               typical installation"
 }
 
-# Install app 
+# Install apps
 __INST(){
     for app in "$@" 
     do 
@@ -163,7 +163,7 @@ __INFO(){
     
         if [ ${#comletedApps[*]} -ne 0 ] ; then
             echo 
-            echo " ${green}Successfully Installed Applications:${reset}"
+            echo " ${green}Successfully Installed/Updated Applications:${reset}"
             
             for app in ${comletedApps[@]}
             do
@@ -185,16 +185,6 @@ __INFO(){
     fi
 
     echo "${green}Installation Completed!${reset}"
-    echo "You may want to install also:"
-    echo 
-    echo "1) Teamviewer"
-    echo "2) Xampp or/and Tomcat"
-    echo "3) Vmware"
-    echo "4) Android Studio"
-    echo "5) IDEs of Jetbrains"
-    echo "6) Slack"
-    echo "7) VNC"
-    echo "8) Viber"
 }
 
 contentCreate(){
@@ -210,19 +200,19 @@ contentCreate(){
     #TODO : Lightworks
 }
 
-codeDeveloping(){
+codeDevelopment(){
+    __INST arduino arduino-core                       #Arduino IDE
     __INST git                                        #Version control system
     __INST vim                                        #Vim terminal text editor
     #__INST emacs                                     #Emacs terminal text editor
     #__INST eclipse                                   #IDE
     #__INST netbeans                                  #IDE
 
-    # Android Studio ?extra?
-    #__INST libc6:i386 libncurses5:i386 libstdc++6:i386 lib32z1 libbz2-1.0:i386
+    #TODO Android studio
+    #TODO VS_CODE
 }
 
-enginnering(){
-    __INST arduino arduino-core                        #Arduino IDE
+engineering(){
     __INST virtualbox                                  #Virtual Machine
     __INST phpmyadmin                                  #Administration tool for MySQL and MariaDB
     #__INST logisim                                    #logic circuits design
@@ -231,7 +221,6 @@ enginnering(){
     #__INST guake                                      #One key(drop-down) terminal
     #__INST qreator                                    #Create qr codes GUI
     #__INST qrencode                                   #Create qr codes Terminal
-    #__INST zim                                        #Notes create
     #__INST kexi                                       #All in one Sql gui
 
     # Octave (Matlab linux alternative)
@@ -249,12 +238,12 @@ files(){
     __INST system-config-samba samba                   #Share files on LAN (In order to setup user use: sudo smbpasswd -a username)
     __INST pdfshuffler                                 #Pdf editor (Merge, remove pages, etc)
     __INST meld                                        #Diff GUI programm (For both Files & Folders)
-    __INST qbittorrent								   #Torrent client
     #__INST dolphin                                    #File Browser
     #__INST bluefish                                   #Text editor
     __INST evince                                      #Pdf viewer
     __INST xournal                                     #Pdf note taking
- 
+    #__INST zim                                        #Notes create
+
     # Sublime text editor
     #__ADDREP ppa:webupd8team/sublime-text-3              
     #__INST sublime-text-installer
@@ -350,7 +339,7 @@ system(){
     __INST synergy                                    #Mouse and Keyboard sharing Software
     __INST dconf-tools                                #Low-level configuration system for GSettings
     __INST expect                                     #Automate events using expected words tool
-    __INST hardinfo                                   #System usefull informations
+    __INST hardinfo                                   #System useful informations
     __INST openvpn                                    #VPN configuring                         
     __INST caffeine                                   #Easily enable/disable screensaver applet
     __INST psensor                                    #System Temps
@@ -380,8 +369,8 @@ system(){
     #__INST python3.6
 
     #Numix theme
-    __ADDREP ppa:numix/ppa                              
-    __INST numix-gtk-theme numix-icon-theme-circle numix-wallpaper-notd
+    #__ADDREP ppa:numix/ppa                              
+    #__INST numix-gtk-theme numix-icon-theme-circle numix-wallpaper-notd
 }
 
 web(){
@@ -389,13 +378,14 @@ web(){
     #__ADDREP ppa:plushuang-tw/uget-stable
     #__INST uget
 
+    __INST qbittorrent								   #Torrent client
     __INST filezilla                                   #File transfer application
 }
 
 full(){
     contentCreate 
-    codeDeveloping 
-    enginnering 
+    codeDevelopment 
+    engineering 
     files 
     games
     media 
@@ -420,8 +410,8 @@ while :
 do
     case "$1" in
         -c | --content)     __UPDG ; contentCreate ;   shift ;;
-        -d | --develop)     __UPDG ; codeDeveloping ;  shift ;;
-        -e | --enginnering) __UPDG ; enginnering ;     shift ;;
+        -d | --develop)     __UPDG ; codeDevelopment ; shift ;;
+        -e | --engineering) __UPDG ; engineering ;     shift ;;
         -f | --files)       __UPDG ; files ;           shift ;;
         -g | --games)       __UPDG ; games ;           shift ;;
         -h | --help)        	     helpMenu ;        exit 0;;
