@@ -4,15 +4,15 @@
 #   apps_install-1.0-debian.sh
 #
 #   Author : Spyridakis Christos
-#   Create Date : 3/05/2017
-#   Last Update : 5/3/2019
+#   Created Date : 3/05/2017
+#   Last Updated : 1/4/2019
 #   Email : spyridakischristos@gmail.com
 #
 #
 #   Description : 
 #       Install some of my favorite (and in my personal point of view usefull) applications in a Debian
 #       based system (Tested on Ubuntu Unity 16.04). This script is free and open source software ; please
-#       make sure to read the manual of each application before install or use it. I am not responsible  
+#       make sure to read the documentation of each application before install or use it. I am not responsible  
 #       for any damage  
 #
 #
@@ -44,7 +44,7 @@ if [ ${interpreter} = "bash" ] ; then
     declare -a failedApps
 fi
 
-#Color changing variables
+# Color changing variables
 red=`tput setaf 1`
 green=`tput setaf 2`
 yellow=`tput setaf 3`
@@ -73,7 +73,7 @@ helpMenu(){
     echo "-L, --Light               install only basic tools"
 }
 
-#Install app 
+# Install app 
 __INST(){
     for app in "$@" 
     do 
@@ -87,13 +87,13 @@ __INST(){
     done
 }
 
-#Add repository
+# Add repository
 __ADDREP(){
     sudo add-apt-repository -y ${1}
     sudo apt-get -y update --fix-missing
 }
 
-#Update and upgrade system
+# Update and upgrade system
 __UPDG(){
     sudo apt-get -y update --fix-missing
     sudo apt-get -y upgrade 
@@ -101,12 +101,12 @@ __UPDG(){
     sudo apt-get -y autoremove
 }
 
-#Update system
+# Update system
 __UPD(){
     sudo apt-get -y update --fix-missing
 }
 
-#Creates a desktop entry on ~/.config/autostart
+# Creates a desktop entry on ~/.config/autostart
 __START(){
     entry="[Desktop Entry]\n"
     entry+="Type=Application\n"
@@ -152,7 +152,7 @@ __GET(){
     echo TODO
 }
 
-#Print some interesting informations at the end
+# Print some interesting informations at the end
 __INFO(){
 
     if [ ${interpreter} = "bash" ] ; then 
@@ -203,7 +203,7 @@ contentCreate(){
     #__INST krita                                     #Photo Editing Software
     #__INST kazam                                     #Screencasting program
 
-    #Gimp - Photo Editing Software
+    # Gimp - Photo Editing Software
     __ADDREP ppa:otto-kesselgulasch/gimp
     __INST gimp
 
@@ -217,7 +217,7 @@ codeDeveloping(){
     #__INST eclipse                                   #IDE
     #__INST netbeans                                  #IDE
 
-    #Android Studio ?extra?
+    # Android Studio ?extra?
     #__INST libc6:i386 libncurses5:i386 libstdc++6:i386 lib32z1 libbz2-1.0:i386
 }
 
@@ -234,14 +234,13 @@ enginnering(){
     #__INST zim                                        #Notes create
     #__INST kexi                                       #All in one Sql gui
 
-    #Octave (Matlab linux alternative)
+    # Octave (Matlab linux alternative)
     __ADDREP ppa:octave/stable
     __INST octave
 
-    #Postgresql Server and Client
+    # Postgresql Server and Client
     __INST pgadmin3 postgresql postgresql-contrib           
-    #apt-cache search postgres
-    #Postgresql Server configuration steps:
+    # Postgresql Server configuration steps:
         #1) sudo -u postgres psql postgres  #Connect to db postgres via psql as user postgres
         #2) \password postgres              #Change pass for postgres user
 }
@@ -255,22 +254,22 @@ files(){
     #__INST bluefish                                   #Text editor
     __INST evince                                      #Pdf viewer
     __INST xournal                                     #Pdf note taking
-
-    #Sublime text editor
-    __ADDREP ppa:webupd8team/sublime-text-3              
-    __INST sublime-text-installer
+ 
+    # Sublime text editor
+    #__ADDREP ppa:webupd8team/sublime-text-3              
+    #__INST sublime-text-installer
     #__INST subliminal
 
-    #LaTex
-    __INST texlive-full                                #Full
-    #__INST texlive texlive-base                        #Light
+    # LaTex
+    #__INST texlive-full                                #Full
+    __INST texlive texlive-base                        #Light
 
-    #LaTex Editor
+    # LaTex Editor
     __INST texmaker
 
-    #Atom text editor
-    __ADDREP ppa:webupd8team/atom                        
-    __INST atom
+    # Atom text editor
+    #__ADDREP ppa:webupd8team/atom                        
+    #__INST atom
 }
 
 games(){
@@ -288,7 +287,7 @@ media(){
     __INST easytag                                     #Tags editing tool for audio/video files
     #__INST clementine                                 #Music player
 
-    #KODI media center
+    # KODI media center
     __INST software-properties-common                  
     __ADDREP ppa:team-xbmc/ppa
     __INST kodi
@@ -322,9 +321,9 @@ peripheral(){
     __INST solaar                                    #Logitech Unifying Receiver peripherals manager for Linux 
 }
 
-#If you want to start on boot some applications just use this function
-#As a matter of fact, this function uses __START which just xreates desktop 
-#entries on ~/.config/autostart directory
+# If you want to start on boot some applications just use this function
+# As a matter of fact, this function uses __START which just creates desktop 
+# entries on ~/.config/autostart directory
 startOnBoot(){
     __START -n 'Alarm-Clock' -e 'alarm-clock-applet --hidden'                
     __START -n 'Caffeine' -e '/usr/bin/caffeine'  
@@ -377,8 +376,8 @@ system(){
     #__INST bacula									  #Backup System
 
     #Python 3.6
-    __ADDREP ppa:jonathonf/python-3.6				  
-    __INST python3.6
+    #__ADDREP ppa:jonathonf/python-3.6				  
+    #__INST python3.6
 
     #Numix theme
     __ADDREP ppa:numix/ppa                              
