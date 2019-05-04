@@ -1,11 +1,11 @@
 #!/bin/bash
 #####################################################################################################################
 #
-#   apps_install-1.0-debian.sh
+#   apps_install-1.1-debian.sh
 #
 #   Author : Spyridakis Christos
 #   Created Date : 3/05/2017
-#   Last Updated : 1/4/2019
+#   Last Updated : 4/5/2019
 #   Email : spyridakischristos@gmail.com
 #
 #
@@ -21,9 +21,10 @@
 #       2) The following functions are implemented:
 #           a) __ADDREP - Use it in order to execute command "sudo add-apt-repository -y" and afterwards update system
 #           b) __INST - Use it in order to execute command "sudo apt-get -y install"
-#           c) __GET - TODO: Download application from official site
+#           c) __GET - Download application from official site 
 #           d) __START - Creates a desktop entry on ~/.config/autostart
 #       3) Uncomment or comment out applications in order to personalize script behaviour
+#       4) Feel free to use it as you like
 #
 #
 ####################################################################################################################
@@ -56,21 +57,22 @@ helpMenu(){
     echo "Usage: $0 -L [Option]... [Option]... "
     echo "Install some of my favorite (and from my point of view, useful) applications on a Debian-based system"
     echo 
-    echo "-c, --content             video and photo editing programs"
-    echo "-d, --develop             IDEs and editors"
-    echo "-e, --engineering         tools for engineers"
-    echo "-f, --files               file managers, editors etc..."
-    echo "-g, --games               linux games"
-    echo "-h, --help                show this help page"
-    echo "-m, --media               media players (music, video, etc...)"
-    echo "-n, --net                 browsers"
-    echo "-o, --onboot              create desktop entries on ~/.config/autostart"
-    echo "-p, --pentest             some penetration testing tools"
-    echo "-l, --peripheral          peripheral device management services"
-    echo "-s, --system              system tools"
-    echo "-w, --web                 web related software"
-    echo "-F, --Full                complete installation"
-    echo "-L, --Light               typical installation"
+    echo "Options:"
+    echo "  -c, --content             video and photo editing programs"
+    echo "  -d, --develop             IDEs and editors"
+    echo "  -e, --engineering         tools for engineers"
+    echo "  -f, --files               file managers, editors etc..."
+    echo "  -g, --games               linux games"
+    echo "  -h, --help                show this help page"
+    echo "  -m, --media               media players (music, video, etc...)"
+    echo "  -n, --net                 browsers"
+    echo "  -o, --onboot              create desktop entries on ~/.config/autostart"
+    echo "  -p, --pentest             some penetration testing tools"
+    echo "  -l, --peripheral          peripheral device management services"
+    echo "  -s, --system              system tools"
+    echo "  -w, --web                 web related software"
+    echo "  -F, --Full                complete installation"
+    echo "  -L, --Light               typical installation"
 }
 
 # Install apps
@@ -149,7 +151,7 @@ __START(){
 }
 
 __GET(){
-    echo TODO
+    wget ${1} -P ~/Downloads
 }
 
 # Print some interesting informations at the end
@@ -277,13 +279,13 @@ media(){
     #__INST clementine                                 #Music player
 
     # KODI media center
-    __INST software-properties-common                  
-    __ADDREP ppa:team-xbmc/ppa
-    __INST kodi
+    #__INST software-properties-common                  
+    #__ADDREP ppa:team-xbmc/ppa
+    #__INST kodi
 }
 
 net() {
-    __INST chromium-browser
+    __INST chromium-browser                            #Browser
 }
 
 pentest(){
@@ -308,6 +310,9 @@ peripheral(){
     __INST xbindkeys xautomation                       
 
     __INST solaar                                    #Logitech Unifying Receiver peripherals manager for Linux 
+
+    __INST autokey-qt                                #Desktop automation utility
+    __INST xdotool                                   #Simulate X11 keyboard/mouse input events
 }
 
 # If you want to start on boot some applications just use this function
