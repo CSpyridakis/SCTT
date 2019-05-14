@@ -229,6 +229,13 @@ engineering(){
     __ADDREP ppa:octave/stable
     __INST octave
 
+    # Kicad 
+    __ADDREP ppa:js-reynaud/kicad-5.1
+    __INST kicad
+
+    # Docker 
+    # TODO : Add commands
+    
     # Postgresql Server and Client
     __INST pgadmin3 postgresql postgresql-contrib           
     # Postgresql Server configuration steps:
@@ -286,6 +293,7 @@ media(){
 
 net() {
     __INST chromium-browser                            #Browser
+    __INST youtube-dl                                  #Video download
 }
 
 pentest(){
@@ -301,6 +309,7 @@ pentest(){
     __INST steghide                                    #Steganography program
     __INST cmatrix                                     #Just for fun xD, matrix style on terminal
     __INST traceroute                                  #Displays the route used by IP packets
+    __INST whois                                       #Whois protocol client
 }
 
 peripheral(){
@@ -353,7 +362,7 @@ system(){
     __INST alarm-clock-applet                         #Alarm clock 
     __INST gnome-system-monitor                       #System Monitor
     #__INST unity-tweak-tool                           #Unity GUI customization tool
-    #__INST gnome-tweak-tool                           #Gnome GUI customization tool
+    __INST gnome-tweak-tool                           #Gnome GUI customization tool
     __INST clamav clamtk                              #Open source antivirus engine with GUI
     __INST indicator-keylock                          #Num/Caps lock indicator
     __INST tmux                                       #Terminal multiplexer
