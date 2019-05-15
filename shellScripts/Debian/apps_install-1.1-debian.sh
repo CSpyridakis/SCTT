@@ -234,16 +234,20 @@ engineering(){
     __INST kicad
 
     # Docker 
-    # TODO : Add commands
+    __INST apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    #sudo apt-key fingerprint 0EBFCD88
+    __ADDREP "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    __INST docker-ce docker-ce-cli containerd.io
 
     # Docker-compose
     sudo apt-get remove docker-compose
-    if [ ! -d /usr/local/bin/ ] ; then # if /usr/local/bin/ does not exists create it
+    if [ ! -d /usr/local/bin/ ] ; then          # if /usr/local/bin/ does not exists create it
         sudo mkdir /usr/local/bin/
     fi
-    version = 1.24.0
-    sudo curl -L "https://github.com/docker/compose/releases/download/$(version)/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    sudo chmod +x /usr/local/bin/docker-compos
+    version=1.24.0
+    sudo curl -L "https://github.com/docker/compose/releases/download/${version}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
     sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
     
     # Postgresql Server and Client
