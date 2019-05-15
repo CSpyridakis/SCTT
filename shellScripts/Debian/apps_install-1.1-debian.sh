@@ -380,6 +380,9 @@ system(){
     __INST exfat-fuse exfat-utils                     #Mount exfat file system
     __INST screenfetch                                #Bash Screenshot Information Tool
 
+    __INST blueman bluez-utils bluez bluetooth        #Bluetooth client(Basically for Logitech devices)
+
+
     #Compiz Settings Manager
     __INST compizconfig-settings-manager 
     __INST compiz-plugins-extra
