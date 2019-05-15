@@ -5,7 +5,7 @@
 #
 #   Author : Spyridakis Christos
 #   Created Date : 3/05/2017
-#   Last Updated : 4/5/2019
+#   Last Updated : 13/5/2019
 #   Email : spyridakischristos@gmail.com
 #
 #
@@ -235,6 +235,16 @@ engineering(){
 
     # Docker 
     # TODO : Add commands
+
+    # Docker-compose
+    sudo apt-get remove docker-compose
+    if [ ! -d /usr/local/bin/ ] ; then # if /usr/local/bin/ does not exists create it
+        sudo mkdir /usr/local/bin/
+    fi
+    version = 1.24.0
+    sudo curl -L "https://github.com/docker/compose/releases/download/$(version)/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compos
+    sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
     
     # Postgresql Server and Client
     __INST pgadmin3 postgresql postgresql-contrib           
@@ -328,6 +338,7 @@ peripheral(){
 # As a matter of fact, this function uses __START which just creates desktop 
 # entries on ~/.config/autostart directory
 startOnBoot(){
+    echo "Start on Boot Script"
     __START -n 'Alarm-Clock' -e 'alarm-clock-applet --hidden'                
     __START -n 'Caffeine' -e '/usr/bin/caffeine'  
 
@@ -367,6 +378,7 @@ system(){
     __INST indicator-keylock                          #Num/Caps lock indicator
     __INST tmux                                       #Terminal multiplexer
     __INST exfat-fuse exfat-utils                     #Mount exfat file system
+    __INST screenfetch                                #Bash Screenshot Information Tool
 
     #Compiz Settings Manager
     __INST compizconfig-settings-manager 
