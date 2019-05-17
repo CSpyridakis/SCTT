@@ -1,11 +1,11 @@
 #!/bin/bash
 #####################################################################################################################
 #
-#   apps_install-1.1-debian.sh
+#   apps_install-1.2-debian.sh
 #
 #   Author : Spyridakis Christos
 #   Created Date : 3/05/2017
-#   Last Updated : 13/5/2019
+#   Last Updated : 17/5/2019
 #   Email : spyridakischristos@gmail.com
 #
 #
@@ -65,7 +65,7 @@ helpMenu(){
     echo "  -g, --games               linux games"
     echo "  -h, --help                show this help page"
     echo "  -m, --media               media players (music, video, etc...)"
-    echo "  -n, --net                 browsers"
+    echo "  -n, --nettools            network tools"
     echo "  -o, --onboot              create desktop entries on ~/.config/autostart"
     echo "  -p, --pentest             some penetration testing tools"
     echo "  -l, --peripheral          peripheral device management services"
@@ -169,18 +169,17 @@ __INFO(){
             
             for app in ${comletedApps[@]}
             do
-                echo "- ${app}" 
+                echo -e "${green}\xE2\x9C\x94${reset} ${app}" 
             done
         fi
         
         if [ ${#failedApps[*]} -ne 0 ]; then
             echo
-            echo " ${red}There is a problem with the installation" 
-            echo " of the following applications:${reset}"
+            echo " ${red}Problem with the installation of the following applications:${reset}" 
             
             for app in ${failedApps[@]}
             do
-                echo "- ${app}" 
+                echo -e "${red}\xE2\x9D\x8C${reset} ${app}" 
             done
         fi 
         echo
@@ -251,7 +250,7 @@ engineering(){
     sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
     
     # Postgresql Server and Client
-    __INST pgadmin3 postgresql postgresql-contrib           
+    #__INST pgadmin3 postgresql postgresql-contrib           
     # Postgresql Server configuration steps:
         #1) sudo -u postgres psql postgres  #Connect to db postgres via psql as user postgres
         #2) \password postgres              #Change pass for postgres user
@@ -305,9 +304,20 @@ media(){
     #__INST kodi
 }
 
-net() {
-    __INST chromium-browser                            #Browser
-    __INST youtube-dl                                  #Video download
+nettools() {
+     #Download manager
+    #__ADDREP ppa:plushuang-tw/uget-stable
+    #__INST uget
+
+    __INST qbittorrent								   #Torrent client
+    #__INST filezilla                                   #File transfer application
+
+    #__INST youtube-dl                                  #Video download
+
+    # KDE connect (bridge between Android devices and Linux PC)
+    __ADDREP ppa:webupd8team/indicator-kdeconnect 
+    __INST kdeconnect indicator-kdeconnect
+    # TODO : Test GSConnect
 }
 
 pentest(){
@@ -355,8 +365,10 @@ startOnBoot(){
     __START -n 'System-load-indicator' -e 'indicator-multiload' -i 'utilities-system-monitor' -tf -gt                   
     __START -n 'Viber' -e '/opt/viber/Viber' -hf -ndf -gt                       
     #__START -n 'xbindkeys' -e 'xbindkeys' -ht -ndf -gt 
+    __START -n 'KDE Connect Indicator' -e 'indicator-kdeconnect' 
 
-    __START -n 'Firefox' -e 'firefox' -tf -i 'firefox'                              
+    __START -n 'Firefox' -e 'firefox' -tf -i 'firefox' 
+                             
 }
 
 system(){
@@ -407,12 +419,7 @@ system(){
 }
 
 web(){
-    #Download manager
-    #__ADDREP ppa:plushuang-tw/uget-stable
-    #__INST uget
-
-    __INST qbittorrent								   #Torrent client
-    __INST filezilla                                   #File transfer application
+    __INST chromium-browser                            #Browser 
 }
 
 full(){
@@ -422,7 +429,7 @@ full(){
     files 
     games
     media 
-    net 
+    nettools 
     pentest
     peripheral
     system 
@@ -433,7 +440,7 @@ full(){
 light(){
     files
     media
-    net
+    nettools
     peripheral
     system
 }
@@ -449,7 +456,7 @@ do
         -g | --games)       __UPDG ; games ;           shift ;;
         -h | --help)        	     helpMenu ;        exit 0;;
         -m | --media)       __UPDG ; media ;           shift ;;
-        -n | --net)         __UPDG ; net ;             shift ;;
+        -n | --nettools)    __UPDG ; nettools ;        shift ;;
         -o | --onboot)               startOnBoot;      exit 0;;
         -p | --pentest)     __UPDG ; pentest ;         shift ;;
         -l | --peripheral)  __UPDG ; peripheral;       shift ;;
