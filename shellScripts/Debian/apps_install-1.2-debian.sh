@@ -365,6 +365,7 @@ startOnBoot(){
     __START -n 'System-load-indicator' -e 'indicator-multiload' -i 'utilities-system-monitor' -tf -gt                   
     __START -n 'Viber' -e '/opt/viber/Viber' -hf -ndf -gt                       
     #__START -n 'xbindkeys' -e 'xbindkeys' -ht -ndf -gt 
+    #__START -n 'nitrogen' -e 'nitrogen --restores'
     __START -n 'KDE Connect Indicator' -e 'indicator-kdeconnect' 
 
     __START -n 'Firefox' -e 'firefox' -tf -i 'firefox' 
@@ -398,7 +399,9 @@ system(){
 
     __INST blueman bluez-utils bluez bluetooth        #Bluetooth client(Basically for Logitech devices)
 
-
+    #Important: You need to use gnome-tweak-tool in order to disable Icons on Desktop
+    __INST  nitrogen                                  #Wallpaper browser and changing utility
+    
     #Compiz Settings Manager
     __INST compizconfig-settings-manager 
     __INST compiz-plugins-extra
