@@ -384,8 +384,7 @@ system(){
     __INST hardinfo                                   #System useful informations
     __INST openvpn                                    #VPN configuring                         
     __INST caffeine                                   #Easily enable/disable screensaver applet
-    __INST psensor                                    #System Temps
-    __INST parcellite                                 #Clipboard manager Applet
+    __INST psensor                                    #System Temps 
     __INST indicator-multiload                        #Graphical system load indicator for CPU, ram, etc
     __INST alarm-clock-applet                         #Alarm clock 
     __INST gnome-system-monitor                       #System Monitor
@@ -396,6 +395,12 @@ system(){
     __INST tmux                                       #Terminal multiplexer
     __INST exfat-fuse exfat-utils                     #Mount exfat file system
     __INST screenfetch                                #Bash Screenshot Information Tool
+
+    #Clipboard manager Applet
+    __INST parcellite                                  
+    #IMPORTANT!
+    #ERROR: Flag 0x0001, status 0, EXIT 1 STAT 0
+    #FIX: remove .local/share/parcellite
 
     __INST blueman bluez-utils bluez bluetooth        #Bluetooth client(Basically for Logitech devices)
 
