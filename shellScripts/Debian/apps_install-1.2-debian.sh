@@ -305,7 +305,7 @@ media(){
 }
 
 nettools() {
-     #Download manager
+    #Download manager
     #__ADDREP ppa:plushuang-tw/uget-stable
     #__INST uget
 
@@ -318,6 +318,8 @@ nettools() {
     __ADDREP ppa:webupd8team/indicator-kdeconnect 
     __INST kdeconnect indicator-kdeconnect
     # TODO : Test GSConnect
+
+    __INST speedtest-cli                               #Test your broadband connection
 }
 
 pentest(){
