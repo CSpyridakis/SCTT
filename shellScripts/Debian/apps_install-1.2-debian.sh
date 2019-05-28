@@ -290,6 +290,8 @@ games(){
     # is a program that displays a random 
     # message from a database of quotations
     __INST fortune-mod
+
+    #__INST hollywood                                 #Create a Hollywood geek melodrama
 }
 
 media(){
@@ -397,6 +399,7 @@ system(){
     __INST tmux                                       #Terminal multiplexer
     __INST exfat-fuse exfat-utils                     #Mount exfat file system
     __INST screenfetch                                #Bash Screenshot Information Tool
+    __INST tree                                       #Displays an indented directory tree
 
     #Clipboard manager Applet
     __INST parcellite                                  
