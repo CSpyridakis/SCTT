@@ -407,7 +407,7 @@ system(){
     __INST zsh
     __INST fonts-powerline
     sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
-    #sudo chsh -s $(which zsh)                        #Make zsh primary shell (On debian-based system the default shell usually is /bin/bash)
+    #chsh -s $(which zsh)                             #Make zsh primary shell (On debian-based system the default shell usually is /bin/bash)
 
     #Clipboard manager Applet
     __INST parcellite                                  
