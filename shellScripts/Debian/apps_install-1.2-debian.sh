@@ -266,6 +266,8 @@ files(){
     __INST xournal                                     #Pdf note taking
     #__INST zim                                        #Notes create
 
+    __INST gscan2pdf                                   #Images to pdf
+
     # Sublime text editor
     #__ADDREP ppa:webupd8team/sublime-text-3              
     #__INST sublime-text-installer
@@ -400,6 +402,12 @@ system(){
     __INST exfat-fuse exfat-utils                     #Mount exfat file system
     __INST screenfetch                                #Bash Screenshot Information Tool
     __INST tree                                       #Displays an indented directory tree
+
+    #Zsh install with oh my zsh 
+    __INST zsh
+    __INST fonts-powerline
+    sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+    #sudo chsh -s $(which zsh)                        #Make zsh primary shell (On debian-based system the default shell usually is /bin/bash)
 
     #Clipboard manager Applet
     __INST parcellite                                  
