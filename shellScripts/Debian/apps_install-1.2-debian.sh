@@ -415,7 +415,11 @@ system(){
     #ERROR: Flag 0x0001, status 0, EXIT 1 STAT 0
     #FIX: remove .local/share/parcellite
 
-    __INST blueman bluez-utils bluez bluetooth        #Bluetooth client(Basically for Logitech devices)
+    #Neofetch
+    __ADDREP ppa:dawidd0811/neofetch
+    __INST neofetch
+
+    __INST blueman bluez-utils bluez bluetooth        #Bluetooth client(In my case, i use it for my Logitech bluetooth peripherals)
 
     #Important: You need to use gnome-tweak-tool in order to disable Icons on Desktop
     __INST  nitrogen                                  #Wallpaper browser and changing utility
