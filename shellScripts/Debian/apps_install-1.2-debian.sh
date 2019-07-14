@@ -402,6 +402,7 @@ system(){
     __INST exfat-fuse exfat-utils                     #Mount exfat file system
     __INST screenfetch                                #Bash Screenshot Information Tool
     __INST tree                                       #Displays an indented directory tree
+    __INST figlet                                     #Create characters in many different styles
 
     #Zsh install with oh my zsh 
     __INST zsh
