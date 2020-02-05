@@ -404,6 +404,14 @@ system(){
     __INST tree                                       #Displays an indented directory tree
     __INST figlet                                     #Create characters in many different styles
     __INST pasystray                                  #PulseAudio system tray
+    __INST alltray                                    #Dock apps in system tray (GNOME)
+    __INST python3-pip 
+    
+    #PDF presentation tools
+    __INST pdf-presenter-console
+    __INST dspdfviewer
+    # Pympress for >= ubuntu 20.04
+    #__INST pympress libgtk-3-0 libpoppler-glib8 libcairo2 python3-gi python3-gi-cairo gobject-introspection libgirepository-1.0-1 gir1.2-gtk-3.0 gir1.2-poppler-0.18
 
     #Zsh install with oh my zsh 
     __INST zsh
