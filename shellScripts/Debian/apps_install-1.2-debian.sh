@@ -214,7 +214,7 @@ codeDevelopment(){
 }
 
 engineering(){
-    __INST virtualbox                                  #Virtual Machine
+    # __INST virtualbox                                  #Virtual Machine
     __INST phpmyadmin                                  #Administration tool for MySQL and MariaDB
     #__INST logisim                                    #logic circuits design
     #__INST eagle                                      #Schematics and pcb design tool
@@ -229,25 +229,25 @@ engineering(){
     __INST octave
 
     # Kicad 
-    __ADDREP ppa:js-reynaud/kicad-5.1
-    __INST kicad
+    # __ADDREP ppa:js-reynaud/kicad-5.1
+    # __INST kicad
 
     # Docker 
-    __INST apt-transport-https ca-certificates curl gnupg-agent software-properties-common
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    # __INST apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+    # curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
     #sudo apt-key fingerprint 0EBFCD88
-    __ADDREP "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-    __INST docker-ce docker-ce-cli containerd.io
+    # __ADDREP "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    # __INST docker-ce docker-ce-cli containerd.io
 
     # Docker-compose
-    sudo apt-get remove docker-compose
-    if [ ! -d /usr/local/bin/ ] ; then          # if /usr/local/bin/ does not exists create it
-        sudo mkdir /usr/local/bin/
-    fi
-    version=1.24.0
-    sudo curl -L "https://github.com/docker/compose/releases/download/${version}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    sudo chmod +x /usr/local/bin/docker-compose
-    sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+    # sudo apt-get remove docker-compose
+    # if [ ! -d /usr/local/bin/ ] ; then          # if /usr/local/bin/ does not exists create it
+    #     sudo mkdir /usr/local/bin/
+    # fi
+    # version=1.24.0
+    # sudo curl -L "https://github.com/docker/compose/releases/download/${version}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    # sudo chmod +x /usr/local/bin/docker-compose
+    # sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
     
     # Postgresql Server and Client
     #__INST pgadmin3 postgresql postgresql-contrib           
@@ -414,9 +414,9 @@ system(){
     #__INST pympress libgtk-3-0 libpoppler-glib8 libcairo2 python3-gi python3-gi-cairo gobject-introspection libgirepository-1.0-1 gir1.2-gtk-3.0 gir1.2-poppler-0.18
 
     #Zsh install with oh my zsh 
-    __INST zsh
-    __INST fonts-powerline
-    sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+    # __INST zsh
+    # __INST fonts-powerline
+    # sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
     #chsh -s $(which zsh)                             #Make zsh primary shell (On debian-based system the default shell usually is /bin/bash)
 
     #Clipboard manager Applet
@@ -451,6 +451,13 @@ system(){
     #Numix theme
     #__ADDREP ppa:numix/ppa                              
     #__INST numix-gtk-theme numix-icon-theme-circle numix-wallpaper-notd
+
+    #Problem with click on touch (touchpad)
+    # sudo apt-get install aptitude
+    # sudo aptitude update
+    # sudo aptitude install xserver-xorg-input-synaptics
+    # sudo apt-get install xserver-xorg-input-all
+
 }
 
 web(){
