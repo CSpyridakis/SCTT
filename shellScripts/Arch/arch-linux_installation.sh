@@ -25,12 +25,12 @@
 #
 # ______________________________________________________________________________________________________________
 #
-          ___   _   _   ____    _____   ____    _   _    ____   _____   ___    ___    _   _   ____  
-         |_ _| | \ | | / ___|  |_   _| |  _ \  | | | |  / ___| |_   _| |_ _|  / _ \  | \ | | / ___|
-          | |  |  \| | \___ \    | |   | |_) | | | | | | |       | |    | |  | | | | |  \| | \___ \
-          | |  | |\  |  ___) |   | |   |  _ <  | |_| | | |___    | |    | |  | |_| | | |\  |  ___) |
-         |___| |_| \_| |____/    |_|   |_| \_\  \___/   \____|   |_|   |___|  \___/  |_| \_| |____/ 
-
+#          ___   _   _   ____    _____   ____    _   _    ____   _____   ___    ___    _   _   ____  
+#         |_ _| | \ | | / ___|  |_   _| |  _ \  | | | |  / ___| |_   _| |_ _|  / _ \  | \ | | / ___|
+#          | |  |  \| | \___ \    | |   | |_) | | | | | | |       | |    | |  | | | | |  \| | \___ \
+#          | |  | |\  |  ___) |   | |   |  _ <  | |_| | | |___    | |    | |  | |_| | | |\  |  ___) |
+#         |___| |_| \_| |____/    |_|   |_| \_\  \___/   \____|   |_|   |___|  \___/  |_| \_| |____/ 
+#
 # ______________________________________________________________________________________________________________
 #
 # Step -1: 
@@ -67,17 +67,17 @@
 #
 #           $ gpg --verify --verbose --keyring vendors.gpg archlinux-version-x86_64.iso.sig
 #   
-        #   *It may appears this kind of output:
-        #       gpg: assuming signed data in `./archlinux-2019.07.01-x86_64.iso'
-        #       gpg: Signature made Δευ 01 Ιούλ 2019 06:07:38 μμ EEST using RSA key ID 9741E8AC
-        #       gpg: using PGP trust model
-        #       gpg: Good signature from "Pierre Schmitz <pierre@archlinux.de>"
-        #       gpg: WARNING: This key is not certified with a trusted signature!
-        #       gpg:          There is no indication that the signature belongs to the owner.
-        #       Primary key fingerprint: 4AA4 767B BC9C 4B1D 18AE  28B7 7F2D 434B 9741 E8AC
-        #       gpg: binary signature, digest algorithm SHA256
-  
-        #   *Don't worry that it is a good but not certified signature! It's ok!
+#          *It may appears this kind of output:
+#              gpg: assuming signed data in `./archlinux-2019.07.01-x86_64.iso'
+#              gpg: Signature made Δευ 01 Ιούλ 2019 06:07:38 μμ EEST using RSA key ID 9741E8AC
+#              gpg: using PGP trust model
+#              gpg: Good signature from "Pierre Schmitz <pierre@archlinux.de>"
+#              gpg: WARNING: This key is not certified with a trusted signature!
+#              gpg:          There is no indication that the signature belongs to the owner.
+#              Primary key fingerprint: 4AA4 767B BC9C 4B1D 18AE  28B7 7F2D 434B 9741 E8AC
+#              gpg: binary signature, digest algorithm SHA256
+#  
+#          *Don't worry that it is a good but not certified signature! It's ok!
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -123,8 +123,8 @@
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #   Step 4: 
-      *Verify EFI support (In my case, i want to install arch in dual boot alongside windows in uefi mode).
-      In case that efi directory is not found you are in legacy mode.
+#      *Verify EFI support (In my case, i want to install arch in dual boot alongside windows in uefi mode).
+#      In case that efi directory is not found you are in legacy mode.
 #           $ ls /sys/firmware/efi/efivars
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

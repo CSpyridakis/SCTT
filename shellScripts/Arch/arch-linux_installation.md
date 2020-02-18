@@ -9,16 +9,19 @@
 ##  Description: 
 Both personal instructions, based on arch linux wiki and some forums, and commands needed to install and use arch linux on my system. This file is free and open source ; please make sure to read the documentation of each application before install or use it. I am not responsible for any damage.     
 
+<br>
+<br>
+
 ___
 ___
 
 
 ```
- ___           _        _ _       _   _             
-|_ _|_ __  ___| |_ __ _| | | __ _| |_(_) ___  _ __  
- | || '_ \/ __| __/ _` | | |/ _` | __| |/ _ \| '_ \ 
- | || | | \__ \ || (_| | | | (_| | |_| | (_) | | | |
-|___|_| |_|___/\__\__,_|_|_|\__,_|\__|_|\___/|_| |_|
+                 ___           _        _ _       _   _             
+                |_ _|_ __  ___| |_ __ _| | | __ _| |_(_) ___  _ __  
+                 | || '_ \/ __| __/ _` | | |/ _` | __| |/ _ \| '_ \ 
+                 | || | | \__ \ || (_| | | | (_| | |_| | (_) | | | |
+                |___|_| |_|___/\__\__,_|_|_|\__,_|\__|_|\___/|_| |_|
 
 ```
 This guide includes my personal notes for arch linux installation, please visit arch linux wiki for a complete installation guide: [arch wiki](https://www.archlinux.org/)
@@ -70,7 +73,7 @@ This guide includes my personal notes for arch linux installation, please visit 
         sudo wipefs --all /dev/sdX
         ```
 
-4. Connecto to internet.
+4. Connect to internet.
  
  * Just by using an  ethernet cable or use `wifi-menu` to connect to a visible wifi access point. 
  * For a hidden SSID.
@@ -133,30 +136,160 @@ This guide includes my personal notes for arch linux installation, please visit 
     timedatectl status
     ```
 
-1. 
+9. Create partitions if do not exist.
 
-1.  
+    Two partitions are mantatory, 'swap' and 'root' partition - and EFI if UEFI is enabled - (For rendandancy, you could also have 'home', or other partitions as well). For a dual boot system (where windows are already installed), just add them alongside existing partitions. If they are not exist create them using fdisk, cfdisk or whichever tool you want, format them as needed and activate swap.
 
-1.  
+    ```
+    fdisk -l                       #Show devices
+    cfdisk                         #In order to create partitions 
 
-8. 
+    #If you need to create yourself EFI partition format it 
+    mkfs.fat -F32 /dev/sdXN         # Replace XN with device name
 
-9.  
+    #Format root partionion in ext4 (replace XN with device name)
+    mkfs.ext4 -L "Linux filesystem" /dev/sdXN                    
+      
+    mkswap -L "Linux Swap" /dev/sdXN    #Initialize swap
+    swapon /dev/sdXN                    #Activate swap on XN device
+    ```
 
-10. 
+10.  Mount root partition.
+    
+        ```
+        mount /dev/sdXN /mnt      #(Replace XN with device name)
+        ```
 
-11. 
+11. Install arch linux on root partition.
 
-12. 
+    ```
+    pacstrap /mnt base base-devel
+    ```
+
+    * base is for arch installation
+    * base-devel includes tools needed for building
+
+
+12. Generate fstab.
+    
+    It basically tells how to mount the file systems
+    
+    ```
+    genfstab -U -p /mnt >> /mnt/etc/fstab
+    ```
+
+    Note: You could inspect fstab file by running: `cat /mnt/etc/fstab`
+
+13.  Change root
+
+        ```       
+        arch-chroot /mnt
+        ```
+
+14. Set timezone
+    ```
+    # (Replace /Europe/Athens with your Region and City)
+    ln -sf /usr/share/zoneinfo/Europe/Athens /etc/localtime    
+    hwclock --systohc     
+    ```
+
+15. Set up localization
+    ```
+    # Open /etc/locale.gen and uncomment needed locales or just run
+    sed -i '0,/#en_US.UTF-8 UTF-8/s//en_US.UTF-8 UTF-8/' /etc/locale.gen
+
+    locale-gen                                      # Generate locales
+    echo "LANG=en_US.UTF-8" > /etc/locale.conf      # Create your locale.conf 
+    ```
+
+16. Set up hostname
+    ```
+    TEMP_HOSTNAME="HOSTNAME"         # Replace HOSTNAME with your hostname
+
+    # Just adds on the first line your hostname
+    echo "${TEMP_HOSTNAME}" >> /etc/hostname   
+
+    # Adds needed content on /etc/hosts file  
+    echo -e "127.0.0.1 \t localhost \n::1 \t\t localhost \n127.0.1.1 \t ${TEMP_HOSTNAME}.localdomain \t ${TEMP_HOSTNAME}" >> /etc/hosts
+    ```
+
+17. Instal extra packages.
+
+    ```
+    # Some usefull packages for boot, internet, kernel etc...
+    pacman -Sy grub efibootmgr dosfstools os-prober mtools lvm2 iw wpa_supplicant dialog networkmanager network-manager-applet wireless_tools net-tools openssh linux linux-lts linux-lts-headers linux-headers sudo git wget nano
+
+    # Xorg server (for desktop enviroment)
+    pacman -Sy xorg-server xorg-apps xorg-xinit xorg-twm xterm xorg-xclock
+    
+    # Some usefull packages for files, web, etc
+    pacman -Sy bash-completion firefox chromium nautilus dolphin nemo pulseaudio pulseaudio-alsa pavucontrol gnome-terminal flashplugin vlc unzip unrar p7zip pidgin deluge smplayer audacious qmmp gimp xfburn thunderbird gedit gnome-system-monitor a52dec faac faad2 flac jasper lame libdca libdv libmad libmpeg2 libtheora libvorbis libxv wavpack x264 xvidcore gstreamer0.10-plugins bluez bluez-utils
+    ```
+
+    Enable packages
+    ```
+    systemctl enable NetworkManager
+    systemctl enable bluetooth.service
+    ```
+
+18. Generate the initial RAM disk.
+
+    ```
+    mkinitcpio -p linux
+
+    mkinitcpio -p linux-lts    # If you have installed linux-lts
+    ```
+
+    Note: if there is an error run with -P instead of -p
+
+19. Change root password.
+    ```
+    passwd
+    ```
+
+20. If UEFI is enabled mount EFI partition.
+    ```
+    mkdir -p /boot/efi
+    mount /dev/sdXN /boot/efi                  # Replace XN with device name
+    ```
+
+21. Install bootloader.
+
+    Note: I want to use GRUB in UEFI mode. If you want to use legacy mode please check out [arch wiki](https://www.archlinux.org/).
+
+    ```
+    grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=grub --recheck #--debug
+
+    os-prober                           # It will automatically find Windows
+
+    grub-mkconfig -o /boot/grub/grub.cfg
+    ```
+
+22. Create your daily user
+    ```
+    USERNAME="username"     # Replace username with your daily user
+
+    useradd -m -g users -G wheel -s /bin/bash "${USERNAME}"
+
+    passwd "${USERNAME}"
+
+    # Run 'EDITOR=nano visudo' and uncomment '# %wheel...' or just execute
+    sudo sed -i '0,/# %wheel ALL=(ALL) ALL/s//%wheel ALL=(ALL) ALL/' /etc/sudoers
+    ```
+
+<br>
+<br>
+<br>
+
 ___
 ___
 
 ```
- ____                                  
-|  _ \ __ _  ___ _ __ ___   __ _ _ __  
-| |_) / _` |/ __| '_ ` _ \ / _` | '_ \ 
-|  __/ (_| | (__| | | | | | (_| | | | |
-|_|   \__,_|\___|_| |_| |_|\__,_|_| |_|
+                     ____                                  
+                    |  _ \ __ _  ___ _ __ ___   __ _ _ __  
+                    | |_) / _` |/ __| '_ ` _ \ / _` | '_ \ 
+                    |  __/ (_| | (__| | | | | | (_| | | | |
+                    |_|   \__,_|\___|_| |_| |_|\__,_|_| |_|
 ```
 
 ### Cheatsheet
