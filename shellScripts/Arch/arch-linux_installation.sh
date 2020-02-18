@@ -2,19 +2,19 @@
 ################################################################################################################
 #
 #   arch-linux_installation.sh
-#
+
 #   Author : Spyridakis Christos
 #   Created Date : 14/7/2019
 #   Last Updated : 2/10/2019
 #   Email : spyridakischristos@gmail.com
-#
-#
+
+
 #   Description: 
 #       Both personal instructions, based on arch linux wiki and some forums, and commands needed to install 
 #       arch linux on my system. This script is free and open source software ; please
 #       make sure to read the documentation of each application before install or use it. I am not responsible  
 #       for any damage.     
-#
+
 #   More informations:
 #       This guide includes my personal notes for arch linux installation, please visit arch linux wiki
 #       for a complete installation guide: https://www.archlinux.org/
@@ -25,12 +25,12 @@
 #
 # ______________________________________________________________________________________________________________
 #
-#           ___   _   _   ____    _____   ____    _   _    ____   _____   ___    ___    _   _   ____  
-#          |_ _| | \ | | / ___|  |_   _| |  _ \  | | | |  / ___| |_   _| |_ _|  / _ \  | \ | | / ___|
-#           | |  |  \| | \___ \    | |   | |_) | | | | | | |       | |    | |  | | | | |  \| | \___ \
-#           | |  | |\  |  ___) |   | |   |  _ <  | |_| | | |___    | |    | |  | |_| | | |\  |  ___) |
-#          |___| |_| \_| |____/    |_|   |_| \_\  \___/   \____|   |_|   |___|  \___/  |_| \_| |____/ 
-#
+          ___   _   _   ____    _____   ____    _   _    ____   _____   ___    ___    _   _   ____  
+         |_ _| | \ | | / ___|  |_   _| |  _ \  | | | |  / ___| |_   _| |_ _|  / _ \  | \ | | / ___|
+          | |  |  \| | \___ \    | |   | |_) | | | | | | |       | |    | |  | | | | |  \| | \___ \
+          | |  | |\  |  ___) |   | |   |  _ <  | |_| | | |___    | |    | |  | |_| | | |\  |  ___) |
+         |___| |_| \_| |____/    |_|   |_| \_\  \___/   \____|   |_|   |___|  \___/  |_| \_| |____/ 
+
 # ______________________________________________________________________________________________________________
 #
 # Step -1: 
@@ -67,17 +67,17 @@
 #
 #           $ gpg --verify --verbose --keyring vendors.gpg archlinux-version-x86_64.iso.sig
 #   
-#           *It may appears this kind of output:
-#               gpg: assuming signed data in `./archlinux-2019.07.01-x86_64.iso'
-#               gpg: Signature made Δευ 01 Ιούλ 2019 06:07:38 μμ EEST using RSA key ID 9741E8AC
-#               gpg: using PGP trust model
-#               gpg: Good signature from "Pierre Schmitz <pierre@archlinux.de>"
-#               gpg: WARNING: This key is not certified with a trusted signature!
-#               gpg:          There is no indication that the signature belongs to the owner.
-#               Primary key fingerprint: 4AA4 767B BC9C 4B1D 18AE  28B7 7F2D 434B 9741 E8AC
-#               gpg: binary signature, digest algorithm SHA256
-#   
-#           *Don't worry that it is a good but not certified signature! It's ok!
+        #   *It may appears this kind of output:
+        #       gpg: assuming signed data in `./archlinux-2019.07.01-x86_64.iso'
+        #       gpg: Signature made Δευ 01 Ιούλ 2019 06:07:38 μμ EEST using RSA key ID 9741E8AC
+        #       gpg: using PGP trust model
+        #       gpg: Good signature from "Pierre Schmitz <pierre@archlinux.de>"
+        #       gpg: WARNING: This key is not certified with a trusted signature!
+        #       gpg:          There is no indication that the signature belongs to the owner.
+        #       Primary key fingerprint: 4AA4 767B BC9C 4B1D 18AE  28B7 7F2D 434B 9741 E8AC
+        #       gpg: binary signature, digest algorithm SHA256
+  
+        #   *Don't worry that it is a good but not certified signature! It's ok!
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -99,16 +99,32 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Step 3:
-#   *Check if there is an internet connection just by using your ethernet cable:
-#       $ ip addr show
+#   ~ Connect your ethernet cable or use wifi-menu to connect to a visible wifi access point.
+#   For a hidden SSID just add a config file on /etc/netctl/, with your profile's name (PROFILE_NAME).
 #
-#   *Otherwise run this command to connect to one of the available access points:
-#       $ wifi-menu
+#   E.g. create /etc/netctl/wlan0-SSID_NAME that contains:
+#
+#   # --- START ---
+#   Description='Custom generated profile'
+#   Interface=YOUR_INTERFACE (e.g. wlan0)
+#   Connection=wireless
+#   Security=wpa
+#   ESSID=YOUR_SSID_NAME
+#   IP=dhcp
+#   Key=YOUR_PASSWORD
+#   Hidden=yes
+#   # --- END --- 
+#
+#   Then run: netctl start PROFILE_NAME
+#
+#   *Check if there is an internet connection:
+#       $ ip addr show (short version: ip a)
+#
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #   Step 4: 
-#       *Verify EFI support (In my case, i want to install arch in dual boot alongside windows in uefi mode).
-#       In case that efi directory is not found you are in legacy mode.
+      *Verify EFI support (In my case, i want to install arch in dual boot alongside windows in uefi mode).
+      In case that efi directory is not found you are in legacy mode.
 #           $ ls /sys/firmware/efi/efivars
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -146,14 +162,15 @@
 #    cfdisk or whichever tool you want, format them as needed and activate swap.
 #       
 #       $ fdisk -l                                      #Show devices
-#       $ cfdisk                                        #Create partitions
+#       $ cfdisk                                        #In order to create partitions 
 #       $ mkfs.ext4 -L "Linux filesystem" /dev/sdXN     #Format root partionion in ext4 (replace XN with device name)               
 #       
 #       $ mkswap -L "Linux Swap" /dev/sdXN              #Initialize swap
 #       $ swapon /dev/sdXN                              #Activate swap on XN device
-#
-#   Make sure that swap is activated by running "free -h" and see if total number of memory in swap is not zero.
-#
+#       # Make sure that swap is activated by running "free -h" and see if total number of memory in swap is not zero.
+#       
+#       #If you need to create yourself EFI partition format it this way
+#       mkfs.fat -F32 /dev/sdXN                         #For EFI partition                    
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Step 9:
@@ -173,7 +190,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Step 11:
-#   *Generate fstab
+#   *Generate fstab (It basically tells how to mount the file systems)
 #
 #       $ genfstab -U -p /mnt >> /mnt/etc/fstab
 #
@@ -201,6 +218,9 @@
 #   *Set up localization:
 #
 #       $ vi /etc/locale.gen                                # Open /etc/locale.gen and uncomment needed locales
+#           or faster: 
+#       $ sed -i '0,/#en_US.UTF-8 UTF-8/s//en_US.UTF-8 UTF-8/' /etc/locale.gen
+#
 #       $ locale-gen                                        # Generate locales
 #       $ echo "LANG=en_US.UTF-8" > /etc/locale.conf        # Create the locale.conf
 #       $ # TODO Create the vconsole.conf
@@ -214,18 +234,18 @@
 #       $ echo "${TEMP_HOSTNAME}" >> /etc/hostname      # Just adds on the first line your hostname
 #
 #       # Adds needed content on /etc/hosts file
-#       $ echo -e "\
-#          \r127.0.0.1 \t localhost \n \
-#          \r::1 \t\t localhost \n \
-#          \r127.0.1.1 \t ${TEMP_HOSTNAME}.localdomain \t ${TEMP_HOSTNAME}" \
-#          >> /etc/hosts
+#       $ echo -e "127.0.0.1 \t localhost \n::1 \t\t localhost \n127.0.1.1 \t ${TEMP_HOSTNAME}.localdomain \t ${TEMP_HOSTNAME}" >> /etc/hosts
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Step 16:
 #   *Just for sure generate the initial RAM disk
 #
-#       $ mkinitcpio -p linux
+#       $ mkinitcpio -p linux 
+#   
+#       if you have installed linux-lts run also: mkinitcpio -p linux-lts
+#
+#   if there is an error run with -P instead of -p
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -248,7 +268,7 @@
 #   *Install bootloader. I want to use GRUB in UEFI mode. 
 #   NOTE: if you want to use legacy mode please check out arch wiki.
 #
-#       $ pacman -Sy grub efibootmgr dosfstools os-prober mtools
+#       $ pacman -Sy grub efibootmgr dosfstools os-prober mtools lvm2
 #       $ grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=grub --recheck #--debug
 #
 #       *If the following error is presented, then exit chroot execute the following command, chroot again
@@ -277,15 +297,16 @@
 # Step 20:
 #   *Install some basic packages
 #       $ pacman -S iw wpa_supplicant dialog networkmanager network-manager-applet wireless_tools net-tools
-#       $ pacman -S openssh linux-lts linux-headers sudo git wget 
-#
+#       $ pacman -S openssh linux-lts linux-lts-headers linux-headers sudo git wget 
+#       
+#   systemctl enable NetworkManager
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Step 21:
 #   *Exit and reboot
 #
 #       $ exit
-#       # umount -R /mnt
+#       # umount -R /mnt (or run: umount -a    that will probably return some errors)
 #       $ reboot
 # 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -318,15 +339,17 @@
 #       Problem:
 #       USERNAME is not in the sudoers file. 
 #       
-#       Solution 1 (Best):
+#       Solution 1:
 #           $ groupadd sudo                         # Only if it does not exist
 #           $ usermod -a -G sudo USERNAME
 #           $ EDITOR=nano visudo                    # Uncomment %sudo  ALL=(ALL) ALL
 #           $ chmod 0440 /etc/sudoers               # It may not needed
 #           $ reboot
 #
-#       Solution 2:
-#           $ EDITOR=nano visudo                    # Add this line: "USERNAME  ALL=(ALL) ALL"
+#       Solution 2 (Best):
+#           $ EDITOR=nano visudo                    # Uncomment this line: "%wheel  ALL=(ALL) ALL"
+#           OR faster run
+#           $ sudo sed -i '0,/# %wheel ALL=(ALL) ALL/s//%wheel ALL=(ALL) ALL/' /etc/sudoers
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -356,7 +379,7 @@
     sudo pacman -S nautilus dolphin nemo
     
     sudo pacman -S pulseaudio pulseaudio-alsa pavucontrol 
-    sudo pacman -S gnome-terminal flashplugin vlc unzip unrar p7zip pidgin skype deluge smplayer audacious qmmp gimp xfburn thunderbird gedit gnome-system-monitor
+    sudo pacman -S gnome-terminal flashplugin vlc unzip unrar p7zip pidgin deluge smplayer audacious qmmp gimp xfburn thunderbird gedit gnome-system-monitor
 
     sudo pacman -S a52dec faac faad2 flac jasper lame libdca libdv libmad libmpeg2 libtheora libvorbis libxv wavpack x264 xvidcore gstreamer0.10-plugins
 
@@ -373,4 +396,58 @@
     sudo pacman –Syu
 
 
+# ----------------------------------------------------------------------------------------------------
+#                                   _                          
+#                  _ __   __ _  ___| | ___ __ ___   __ _ _ __  
+#                 | '_ \ / _` |/ __| |/ / '_ ` _ \ / _` | '_ \ 
+#                 | |_) | (_| | (__|   <| | | | | | (_| | | | |
+#                 | .__/ \__,_|\___|_|\_\_| |_| |_|\__,_|_| |_|
+#                 |_|  
+#
+#
+# -------------------------------------------------------------------------
+#                       _             _      _            _   
+#                    __| |_  ___ __ _| |_ __| |_  ___ ___| |_ 
+#                   / _| ' \/ -_) _` |  _(_-< ' \/ -_) -_)  _|
+#                   \__|_||_\___\__,_|\__/__/_||_\___\___|\__|
+#
+#
+# pacman -S program             # Install a program (-S stands for sync)
+#
+# pacman -Sy                    # Just syncronize package databases (does not update programs)
+# pacman -Su                    # Actually update programs
+# pacman -Syu                   # Syncronize package databases and update (update and upgrade system)
+# pacman -Syy                   # Double check remotes 
+# pacman -Sc                    # Remove packages from cache (remove old versions of packages, in simple words clears not needed space from root)
+
+# pacman -Ss ^pro               # Search every program that its title or description starts with pro (regex)
+
+# pacman -R program             # Remove a program
+# pacman -Rs program            # Remove a program with its dependencies
+# pacman -Rns program           # Remove a program with its dependencies and system config files
+
+# pacman -Q                     # List all installed programs
+# pacman -Qe                    # Programs that user has explicity installed
+# pacman -Qeq                   # Only provides program name without extra info e.g. version 
+# pacman -Qn                    # All programs installed from main repositories
+# pacman -Qm                    # All programs installed from AUR
+# pacman -Qdt                   # Uneeded dependencies (orphans)
+# pacman -Qs program            # Seach a program on local repository 
+#
+#
+# -------------------------------------------------------------------------
+#                                      _            
+#                              _____ _| |_ _ _ __ _ 
+#                             / -_) \ /  _| '_/ _` |
+#                             \___/_\_\\__|_| \__,_|
+#                                                   
+#
+# 1) Packman configuration file: /etc/pacman.conf
+# You may want to uncomment in Mics options these: Color, VerbosePackages, CheckSpace
+#
+# 2) Update /etc/pacman.d/mirrorlist move on top closest to you mirrors
+#
+#
+# ----------------------------------------------------------------------------------------------------  
+#
 

@@ -458,6 +458,12 @@ system(){
     # sudo aptitude install xserver-xorg-input-synaptics
     # sudo apt-get install xserver-xorg-input-all
 
+    # Battery optimize
+    # __INST tlp powertop
+
+    # for CPU
+# __INST intel-microcode                                #For Intel
+    # __INST TODO for AMD        
 }
 
 web(){
