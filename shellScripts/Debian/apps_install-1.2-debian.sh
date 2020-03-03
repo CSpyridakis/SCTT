@@ -316,7 +316,19 @@ nettools() {
     __INST qbittorrent								   #Torrent client
     #__INST filezilla                                   #File transfer application
 
-    #__INST youtube-dl                                  #Video download
+    #Youtube-dl
+    sudo curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/youtube-dl
+    sudo chmod a+rx /usr/local/bin/youtube-dl
+
+    # ________________________________________________________________________________________________
+    #                                               Youtube-dl examples
+    # --- Audio Playlist ---
+    # youtube-dl --extract-audio --embed-thumbnail --audio-format mp3 --yes-playlist  <PLAYLIST-URL>
+    # --- Video ---
+    # youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio' --merge-output-format mp4 --embed-thumbnail <URL>
+    # --- Video Playlist ---
+    # youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio' --merge-output-format mp4 --embed-thumbnail --yes-playlist  <PLAYLIST-URL>
+    # ________________________________________________________________________________________________
 
     # KDE connect (bridge between Android devices and Linux PC)
     __ADDREP ppa:webupd8team/indicator-kdeconnect 
