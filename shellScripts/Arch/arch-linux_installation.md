@@ -317,3 +317,26 @@ pacman -Qs program  | Seach a program on local repository
 *  Pacman configuration file: /etc/pacman.conf. You may want to uncomment in Mics options these: Color, VerbosePackages, CheckSpace
 
 * Update /etc/pacman.d/mirrorlist. Just move on top closest to you mirrors
+
+
+```
+ _____ _              ___     _____     _      _        
+|_   _(_)_ __  ___   ( _ )   |_   _| __(_) ___| | _____ 
+  | | | | '_ \/ __|  / _ \/\   | || '__| |/ __| |/ / __|
+  | | | | |_) \__ \ | (_>  <   | || |  | | (__|   <\__ \
+  |_| |_| .__/|___/  \___/\/   |_||_|  |_|\___|_|\_\___/
+        |_|          
+
+```
+
+###NetworkManager
+
+Command | Info
+----|----
+nmcli device | See a list of network devices and their state
+nmcli radio wifi off | Turn off wifi
+nmcli device wifi list | List nearby wifi networks
+nmcli connection show | Get a list of UUIDs
+nmcli device wifi connect SSID password password hidden yes ifname wlan1 profile_name | Connect to a wifi on the wlan1 wifi interface that is hidden
+nmcli device disconnect ifname eth0 | Disconnect an interface
+nmcli connection up uuid UUID | Reconnect an interface marked as disconnected
