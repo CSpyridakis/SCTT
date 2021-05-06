@@ -5,7 +5,7 @@
 #
 #   Author : Spyridakis Christos
 #   Created Date : 3/05/2017
-#   Last Updated : 17/5/2019
+#   Last Updated : 15/4/2021
 #   Email : spyridakischristos@gmail.com
 #
 #
@@ -257,6 +257,7 @@ engineering(){
 }
 
 files(){
+    __INST nemo
     __INST system-config-samba samba                   #Share files on LAN (In order to setup user use: sudo smbpasswd -a username)
     __INST pdfshuffler                                 #Pdf editor (Merge, remove pages, etc)
     __INST meld                                        #Diff GUI programm (For both Files & Folders)
@@ -419,6 +420,15 @@ system(){
     __INST alltray                                    #Dock apps in system tray (GNOME)
     __INST python3-pip 
     
+    __INST paprefs                                    #Enable multiple audio outputs at once
+    #To work, install it, open it from terminal goto Simultaneous Outputs and enable it, then
+    #run 'pulseaudio -k' and you are ready
+
+    # __INST scrcpy                                    #Display phones screen to PC
+
+
+    # __INST anbox                                       #Android sandbox
+
     #PDF presentation tools
     __INST pdf-presenter-console
     __INST dspdfviewer
