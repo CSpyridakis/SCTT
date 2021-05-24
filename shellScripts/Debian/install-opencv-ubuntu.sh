@@ -19,6 +19,7 @@ BUILD_DIR="~/Documents/OpenCV/build"
 OPENCV_DIR="~/Documents/OpenCV"
 EXAMLES_DIR="~/Desktop/OpenCV-examples"
 QT_enabled="true"
+CAMERA_RES_PROBLEM="true"
 
 red=`tput setaf 1`
 green=`tput setaf 2`
@@ -31,27 +32,38 @@ procNumber=$(nproc --all)
 ###############################################################################
 
 installPrerequisites(){
-    sudo apt update && sudo apt install -y cmake g++ wget unzip make
+    sudo apt update
+    sudo apt install -y cmake g++ wget unzip make
 
     if [ ${QT_enabled} == "true" ] ; then 
-        sudo apt-get install qtbase5-dev qtdeclarative5-dev
+        sudo apt-get install -y qtbase5-dev qtdeclarative5-dev
         echo "${yellow}[QT-enabled]${reset}"
     else
         echo "${yellow}[QT-disabled]${reset}"
+    fi
+
+    if [ ${CAMERA_RES_PROBLEM} == "true" ] ; then 
+        sudo apt-get install -y libv4l-dev 
+        echo "${yellow}[LIB V4L-enabled]${reset}"
+    else
+        echo "${yellow}[LIB V4L-disabled]${reset}"
     fi
 
     echo "${green}Prerequisites Installed${reset}"
 }
 
 downloadOpenCV(){
-    mkdir -p ${OPENCV_DIR} && cd ${OPENCV_DIR}
+    cd ~
+    OPENCV_ON="$(pwd)/${OPENCV_DIR:2}/"
+    BUILD_ON="$(pwd)/${BUILD_DIR:2}/"
+    mkdir -p ${OPENCV_ON} && cd ${OPENCV_ON}
 
     # Download and unpack sources
     wget -O opencv.zip https://github.com/opencv/opencv/archive/master.zip
     unzip opencv.zip
 
     # Create build directory
-    mkdir -p ${BUILD_DIR}
+    mkdir -p ${BUILD_ON}
 
     echo "${green}Sources Downloaded${reset}"
 }
@@ -62,11 +74,16 @@ configureOpenCV(){
 
     if [ -d "${BUILD_ON}" ] ; then
         cd ${BUILD_ON}
+        arguments=""
         if [ ${QT_enabled} == "true" ] ; then 
-            cmake -D WITH_QT=ON ../opencv-master
-        else
-            cmake  ../opencv-master
+            arguments+="-D WITH_QT=ON "
         fi
+
+        if [ ${CAMERA_RES_PROBLEM} == "true" ] ; then 
+            arguments+="-D WITH_LIBV4L=ON "
+        fi
+
+        cmake ${arguments} ../opencv-master
         echo "${green}Configuration Finished${reset}"
     else
         echo "${red}First download OpenCV sources ${reset}"
@@ -82,7 +99,7 @@ buildAndInstall(){
         cd ${BUILD_ON}
         make -j${procNumber}
         sudo make install
-        echo "${green}OpenCV successfully installed${reset}"
+        echo "${green}OpenCV successfully installed!${reset}"
     else
         echo "${red}First download and configure OpenCV sources ${reset}"
         echo "${yellow}Run: $0 -h${reset}"
@@ -90,11 +107,24 @@ buildAndInstall(){
 }
 
 uninstallOpenCV(){
-    cd ${BUILD_DIR}
-    sudo make uninstall
-    cd ${OPENCV_DIR}
-    rm -rf build
-    mkdir -p ${BUILD_DIR}
+    cd ~
+    OPENCV_ON="$(pwd)/${OPENCV_DIR:2}/"
+    BUILD_ON="$(pwd)/${BUILD_DIR:2}/"
+    EXAMPLES_ON="$(pwd)/${EXAMLES_DIR:2}/"
+
+    #Delete examples
+    rm -rf ${EXAMPLES_ON}
+
+    #Uninstall from system
+    cd ${BUILD_ON}
+    sudo make uninstall || echo "${yellow}There is not build yet..${reset}"
+    
+    #Delete build files
+    cd ${OPENCV_ON}
+    rm -rf build/
+    mkdir -p ${BUILD_ON}
+    
+    echo "${yellow}Successfully Uninstalled${reset}"
 }
 
 installOpenCV(){
@@ -108,8 +138,10 @@ installOpenCV(){
 # Create a simple example
 ###############################################################################
 createExampleProject(){
-    echo "Create Example Project!"
-    mkdir -p ${EXAMLES_DIR} && cd ${EXAMLES_DIR}
+    echo "${yellow}Create Example Project!${reset}"
+    cd ~
+    EXAMPLES_ON="$(pwd)/${EXAMLES_DIR:2}/"
+    mkdir -p ${EXAMPLES_ON} && cd ${EXAMPLES_ON}
 
     # Clean files
     echo '#!/bin/bash
