@@ -1,93 +1,201 @@
 #!/bin/bash
 #
 #   Author: Spyridakis Christos
-#   Create Date: 20/5/2021
-#   Last update: 20/5/2021
+#   Creation Date: 20/5/2021
+#   Last update: 24/5/2021
 #
 #   Description:
 #       Install OpenCV - on a Debian based OS (tested on Ubuntu 18.04.4 LTS) -
 #       from source files (get them from github), build code in
-#       ~/Documents/OpenCV directory, install binaries & executables to /usr/local
-#       and create a simple usage example on ~/Desktop/OpenCV-example
+#       ~/Documents/OpenCV/ directory, install binaries & executables to /usr/local/
+#       and create a simple usage example on ~/Desktop/OpenCV-examples/
 #
 #       Instructions based on official Documentation
 #       https://docs.opencv.org/master/d7/d9f/tutorial_linux_install.html
 #
-#   Note:
-#       If you want to uninstall OpenCV, run from inside OpenCV directory: sudo make uninstall 
+#
 
+BUILD_DIR="~/Documents/OpenCV/build"
+OPENCV_DIR="~/Documents/OpenCV"
+EXAMLES_DIR="~/Desktop/OpenCV-examples"
+QT_enabled="true"
+
+red=`tput setaf 1`
+green=`tput setaf 2`
+yellow=`tput setaf 3`
+reset=`tput sgr0`
+procNumber=$(nproc --all)
 
 ###############################################################################
 # Install OpenCV
 ###############################################################################
 
-mkdir -p ~/Documents/OpenCV && cd ~/Documents/OpenCV/
+installPrerequisites(){
+    sudo apt update && sudo apt install -y cmake g++ wget unzip make
 
-# Install minimal prerequisites (Ubuntu 18.04 as reference)
-sudo apt update && sudo apt install -y cmake g++ wget unzip make
+    if [ ${QT_enabled} == "true" ] ; then 
+        sudo apt-get install qtbase5-dev qtdeclarative5-dev
+        echo "${yellow}[QT-enabled]${reset}"
+    else
+        echo "${yellow}[QT-disabled]${reset}"
+    fi
 
-# Download and unpack sources
-wget -O opencv.zip https://github.com/opencv/opencv/archive/master.zip
-unzip opencv.zip
+    echo "${green}Prerequisites Installed${reset}"
+}
 
-# Create build directory
-mkdir -p build && cd build
+downloadOpenCV(){
+    mkdir -p ${OPENCV_DIR} && cd ${OPENCV_DIR}
 
-# Configure
-cmake  ../opencv-master
+    # Download and unpack sources
+    wget -O opencv.zip https://github.com/opencv/opencv/archive/master.zip
+    unzip opencv.zip
 
-# Build
-cmake --build .
+    # Create build directory
+    mkdir -p ${BUILD_DIR}
 
-#Install
-sudo make install
+    echo "${green}Sources Downloaded${reset}"
+}
 
+configureOpenCV(){
+    cd ~
+    BUILD_ON="$(pwd)/${BUILD_DIR:2}/"
+
+    if [ -d "${BUILD_ON}" ] ; then
+        cd ${BUILD_ON}
+        if [ ${QT_enabled} == "true" ] ; then 
+            cmake -D WITH_QT=ON ../opencv-master
+        else
+            cmake  ../opencv-master
+        fi
+        echo "${green}Configuration Finished${reset}"
+    else
+        echo "${red}First download OpenCV sources ${reset}"
+        echo "${yellow}Run: $0 -h${reset}"
+    fi
+}
+
+buildAndInstall(){
+    cd ~
+    BUILD_ON="$(pwd)/${BUILD_DIR:2}/"
+
+    if [ -d "${BUILD_ON}" ] ; then
+        cd ${BUILD_ON}
+        make -j${procNumber}
+        sudo make install
+        echo "${green}OpenCV successfully installed${reset}"
+    else
+        echo "${red}First download and configure OpenCV sources ${reset}"
+        echo "${yellow}Run: $0 -h${reset}"
+    fi
+}
+
+uninstallOpenCV(){
+    cd ${BUILD_DIR}
+    sudo make uninstall
+    cd ${OPENCV_DIR}
+    rm -rf build
+    mkdir -p ${BUILD_DIR}
+}
+
+installOpenCV(){
+    installPrerequisites
+    downloadOpenCV
+    configureOpenCV
+    buildAndInstall
+}
 
 ###############################################################################
 # Create a simple example
 ###############################################################################
+createExampleProject(){
+    echo "Create Example Project!"
+    mkdir -p ${EXAMLES_DIR} && cd ${EXAMLES_DIR}
 
-mkdir -p ~/Desktop/OpenCV-example && cd ~/Desktop/OpenCV-example
+    # Clean files
+    echo '#!/bin/bash
+    rm -rf CMakeFiles cmake_install.cmake CMakeCache.txt TestOpenCV Makefile' > clean && chmod +x clean
 
-# Clean files
-echo '#!/bin/bash
-rm -rf CMakeFiles cmake_install.cmake CMakeCache.txt TestOpenCV Makefile' > clean && chmod +x clean
+    # Build files
+    echo '#!/bin/bash
+    cmake .
+    make' > build && chmod +x build 
 
-# Build files
-echo '#!/bin/bash
-cmake .
-make' > build && chmod +x build 
+    # Run executable
+    echo '#!/bin/bash
+    ./TestOpenCV' > run && chmod +x run 
 
-# Run executable
-echo '#!/bin/bash
-./TestOpenCV' > run && chmod +x run 
+    # CMakeLists.txt
+    echo 'cmake_minimum_required(VERSION 2.8)
+    project( TestOpenCV )
+    find_package( OpenCV REQUIRED )
+    include_directories( ${OpenCV_INCLUDE_DIRS} )
+    add_executable( ${PROJECT_NAME} TestOpenCV.cpp )
+    target_link_libraries( ${PROJECT_NAME} ${OpenCV_LIBS} )' > CMakeLists.txt
 
-# CMakeLists.txt
-echo 'cmake_minimum_required(VERSION 2.8)
-project( TestOpenCV )
-find_package( OpenCV REQUIRED )
-include_directories( ${OpenCV_INCLUDE_DIRS} )
-add_executable( ${PROJECT_NAME} TestOpenCV.cpp )
-target_link_libraries( ${PROJECT_NAME} ${OpenCV_LIBS} )' > CMakeLists.txt
+    # Main
+    echo '#include <stdio.h>
+    #include <opencv2/opencv.hpp>
 
-# Main
-echo '#include <stdio.h>
-#include <opencv2/opencv.hpp>
+    using namespace cv;
 
-using namespace cv;
+    int main(int argc, char** argv ){
+        Mat image = imread( "OpenCV-logo.png", 1 );
+        if ( !image.data ){
+            printf("No image data \n");
+            return -1;
+        }
+        namedWindow("Display Image", WINDOW_NORMAL );
+        resizeWindow("Display Image", 800, 600);
+        imshow("Display Image", image);
+        waitKey(0);
+        return 0;
+    }' > TestOpenCV.cpp
 
-int main(int argc, char** argv ){
-    Mat image = imread( "OpenCV-logo.png", 1 );
-    if ( !image.data ){
-        printf("No image data \n");
-        return -1;
-    }
-    namedWindow("Display Image", WINDOW_NORMAL );
-    resizeWindow("Display Image", 800, 600);
-    imshow("Display Image", image);
-    waitKey(0);
-    return 0;
-}' > TestOpenCV.cpp
+    # Get example image
+    wget -O OpenCV-logo.png https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/OpenCV_Logo_with_text_svg_version.svg/1200px-OpenCV_Logo_with_text_svg_version.svg.png
+}
 
-# Get example image
-wget -O OpenCV-logo.png https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/OpenCV_Logo_with_text_svg_version.svg/1200px-OpenCV_Logo_with_text_svg_version.svg.png
+
+###############################################################################
+
+helpMenu(){
+    echo "Usage: $0 [Option].. [Option].."
+    echo "Install OpenCV on a Debian-based system"
+    echo 
+    echo "Options:"
+    echo "  -b, --build             Build sources with make and install to your system OpenCV libs and executables"
+    echo "  -c, --configure         Configure using CMake"
+    echo "  -d, --download          Download OpenCV sources from official GitHub page to ${OPENCV_DIR}/"
+    echo "  -e, --examples          Create basic examples to your ${EXAMLES_DIR}/"
+    echo "  -i, --install           Download, Configure, Build and Install OpenCV"
+    echo "  -p, --prerequisites     Install prerequisites"
+    echo "  -u, --uninstall         Uninstall and remove build files"
+}
+
+#MAIN
+while :
+do
+    case "$1" in
+        -b | --build)               buildAndInstall;        shift ;;
+        -c | --configure)           configureOpenCV;        shift ;;
+        -d | --download)            downloadOpenCV;         shift ;;
+        -e | --examples)            createExampleProject ;  shift ;;
+        -h | --help)                helpMenu ;              shift ;;
+        -i | --install)             installOpenCV;          shift ;;
+        -p | --prerequisites)       installPrerequisites;   shift ;;
+        -u | --uninstall)           uninstallOpenCV ;       shift ;;
+
+        --*)
+            echo "Unknown option: $1" >&2
+            helpMenu
+            exit 1
+            ;;
+        -*)
+            echo "Unknown option: $1" >&2
+            helpMenu
+            exit 1 
+            ;;
+        *) 
+            break
+    esac
+done
