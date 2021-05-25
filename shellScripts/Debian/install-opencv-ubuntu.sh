@@ -2,7 +2,7 @@
 #
 #   Author: Spyridakis Christos
 #   Creation Date: 20/5/2021
-#   Last update: 24/5/2021
+#   Last update: 25/5/2021
 #
 #   Description:
 #       Install OpenCV - on a Debian based OS (tested on Ubuntu 18.04.4 LTS) -
@@ -20,6 +20,8 @@ OPENCV_DIR="~/Documents/OpenCV"
 EXAMLES_DIR="~/Desktop/OpenCV-examples"
 QT_enabled="true"
 CAMERA_RES_PROBLEM="true"
+EXTRA_MODULES="false"
+CMAKE_LOG_FILE="cmake-log.txt"
 
 red=`tput setaf 1`
 green=`tput setaf 2`
@@ -33,23 +35,29 @@ procNumber=$(nproc --all)
 
 installPrerequisites(){
     sudo apt update
+    echo -e "${yellow}[Update Finished - install basic packages]${reset}\n"
     sudo apt install -y cmake g++ wget unzip make
 
     if [ ${QT_enabled} == "true" ] ; then 
+        echo "${yellow}[Install QT]${reset}"
         sudo apt-get install -y qtbase5-dev qtdeclarative5-dev
-        echo "${yellow}[QT-enabled]${reset}"
+        echo -e "${yellow}[QT-enabled]${reset}\n"
     else
-        echo "${yellow}[QT-disabled]${reset}"
+        echo -e "${yellow}[QT-disabled]${reset}\n"
     fi
 
     if [ ${CAMERA_RES_PROBLEM} == "true" ] ; then 
+        echo "${yellow}[Install V4L and Gstreamer]${reset}"
         sudo apt-get install -y libv4l-dev 
+        sudo apt-get install -y v4l-utils 
+        sudo apt-get install -y libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
         echo "${yellow}[LIB V4L-enabled]${reset}"
+        echo "${yellow}[Please Run: v4l2-ctl -d0 --list-formats-ext]${reset}"
     else
         echo "${yellow}[LIB V4L-disabled]${reset}"
     fi
 
-    echo "${green}Prerequisites Installed${reset}"
+    echo -e "${green}Prerequisites Installed${reset}\n"
 }
 
 downloadOpenCV(){
@@ -74,16 +82,21 @@ configureOpenCV(){
 
     if [ -d "${BUILD_ON}" ] ; then
         cd ${BUILD_ON}
-        arguments=""
+        arguments="-D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local "
+        if [ ${EXTRA_MODULES} == "true" ] ; then
+            arguments+="-D OPENCV_EXTRA_MODULES_PATH=~/opencv_contrib/modules "
+        fi
+
         if [ ${QT_enabled} == "true" ] ; then 
             arguments+="-D WITH_QT=ON "
         fi
 
         if [ ${CAMERA_RES_PROBLEM} == "true" ] ; then 
-            arguments+="-D WITH_LIBV4L=ON "
+            arguments+="-D WITH_V4L=ON -D WITH_LIBV4L=ON -D WITH_GSTREAMER=ON "
         fi
-
-        cmake ${arguments} ../opencv-master
+        echo -e "${yellow}[RUN] - cmake ${arguments} ../opencv-master${reset}\n\n"
+        cmake ${arguments} ../opencv-master 2>&1 | tee ${CMAKE_LOG_FILE}
+        echo "${yellow}[JUST RUN] - cmake ${arguments} ../opencv-master${reset}"
         echo "${green}Configuration Finished${reset}"
     else
         echo "${red}First download OpenCV sources ${reset}"
@@ -113,14 +126,17 @@ uninstallOpenCV(){
     EXAMPLES_ON="$(pwd)/${EXAMLES_DIR:2}/"
 
     #Delete examples
+    echo "${yellow}1. Remove examples${reset}"
     rm -rf ${EXAMPLES_ON}
 
     #Uninstall from system
     cd ${BUILD_ON}
+    echo "${yellow}2. Remove installation from system${reset}"
     sudo make uninstall || echo "${yellow}There is not build yet..${reset}"
     
     #Delete build files
     cd ${OPENCV_ON}
+    echo "${yellow}3. Remove build${reset}"
     rm -rf build/
     mkdir -p ${BUILD_ON}
     
