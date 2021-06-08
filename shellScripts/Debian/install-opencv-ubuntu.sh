@@ -2,7 +2,7 @@
 #
 #   Author: Spyridakis Christos
 #   Creation Date: 20/5/2021
-#   Last update: 25/5/2021
+#   Last update: 8/6/2021
 #
 #   Description:
 #       Install OpenCV - on a Debian based OS (tested on Ubuntu 18.04.4 LTS) -
@@ -36,7 +36,22 @@ procNumber=$(nproc --all)
 installPrerequisites(){
     sudo apt update
     echo -e "${yellow}[Update Finished - install basic packages]${reset}\n"
-    sudo apt install -y cmake g++ wget unzip make
+    sudo apt install -y cmake g++ wget unzip make pkg-config
+
+    echo -e "${yellow}[For image files in a particular format]${reset}\n"
+    sudo apt-get install -y libjpeg-dev libtiff5-dev libpng-dev
+
+    echo -e "${yellow}[For video files in a particular codec]${reset}\n"
+    sudo apt-get install -y libavcodec-dev libavformat-dev libswscale-dev libxvidcore-dev libx264-dev libxine2-dev
+
+    echo -e "${yellow}[highgui module to show images or videos]${reset}\n"
+    sudo apt-get install -y libgtk2.0-dev
+
+    echo -e "${yellow}[support OpenGL]${reset}\n"
+    sudo apt-get install -y mesa-utils libgl1-mesa-dri libgtkgl2.0-dev libgtkglext1-dev  
+
+    echo -e "${yellow}[OpenCV optimization]${reset}\n"
+    sudo apt-get install -y libatlas-base-dev gfortran libeigen3-dev
 
     if [ ${QT_enabled} == "true" ] ; then 
         echo "${yellow}[Install QT]${reset}"
@@ -82,7 +97,12 @@ configureOpenCV(){
 
     if [ -d "${BUILD_ON}" ] ; then
         cd ${BUILD_ON}
-        arguments="-D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local "
+        arguments="-D CMAKE_BUILD_TYPE=RELEASE "
+        arguments+="-D CMAKE_INSTALL_PREFIX=/usr/local "
+        arguments+="-D INSTALL_C_EXAMPLES=ON "
+        arguments+="-D BUILD_EXAMPLES=ON "
+        arguments+="-D WITH_OPENGL=ON "
+
         if [ ${EXTRA_MODULES} == "true" ] ; then
             arguments+="-D OPENCV_EXTRA_MODULES_PATH=~/opencv_contrib/modules "
         fi
@@ -92,7 +112,9 @@ configureOpenCV(){
         fi
 
         if [ ${CAMERA_RES_PROBLEM} == "true" ] ; then 
-            arguments+="-D WITH_V4L=ON -D WITH_LIBV4L=ON -D WITH_GSTREAMER=ON "
+            arguments+="-D WITH_V4L=ON "
+            arguments+="-D WITH_LIBV4L=ON "
+            arguments+="-D WITH_GSTREAMER=ON "
         fi
         echo -e "${yellow}[RUN] - cmake ${arguments} ../opencv-master${reset}\n\n"
         cmake ${arguments} ../opencv-master 2>&1 | tee ${CMAKE_LOG_FILE}
@@ -153,6 +175,7 @@ installOpenCV(){
 ###############################################################################
 # Create a simple example
 ###############################################################################
+# Alternatively create a Makefile with this content: g++ TestOpenCV.cpp `pkg-config opencv --cflags --libs` -o TestOpenCV
 createExampleProject(){
     echo "${yellow}Create Example Project!${reset}"
     cd ~
