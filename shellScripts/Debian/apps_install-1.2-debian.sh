@@ -227,6 +227,7 @@ engineering(){
     # Octave (Matlab linux alternative)
     __ADDREP ppa:octave/stable
     __INST octave
+    # pkg install -forge <pkg_name>; # Pkg from octave.sourceforge.io
 
     # Kicad 
     # __ADDREP ppa:js-reynaud/kicad-5.1
