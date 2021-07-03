@@ -2,10 +2,10 @@
 #
 #   Author: Spyridakis Christos
 #   Creation Date: 20/5/2021
-#   Last update: 8/6/2021
+#   Last update: 3/7/2021
 #
 #   Description:
-#       Install OpenCV - on a Debian based OS (tested on Ubuntu 18.04.4 LTS) -
+#       Install OpenCV - on a Debian based OS (tested on Ubuntu 18.04.4 LTS and Rasbian Os ) -
 #       from source files (get them from github), build code in
 #       ~/Documents/OpenCV/ directory, install binaries & executables to /usr/local/
 #       and create a simple usage example on ~/Desktop/OpenCV-examples/
@@ -17,7 +17,7 @@
 
 BUILD_DIR="~/Documents/OpenCV/build"
 OPENCV_DIR="~/Documents/OpenCV"
-EXAMLES_DIR="~/Desktop/OpenCV-examples"
+EXAMLES_DIR="~/Desktop/OpenCV-example"
 QT_enabled="true"
 CAMERA_RES_PROBLEM="true"
 EXTRA_MODULES="false"
@@ -181,49 +181,12 @@ createExampleProject(){
     cd ~
     EXAMPLES_ON="$(pwd)/${EXAMLES_DIR:2}/"
     mkdir -p ${EXAMPLES_ON} && cd ${EXAMPLES_ON}
+    echo "In dir: ${PWD}"
 
-    # Clean files
-    echo '#!/bin/bash
-    rm -rf CMakeFiles cmake_install.cmake CMakeCache.txt TestOpenCV Makefile' > clean && chmod +x clean
-
-    # Build files
-    echo '#!/bin/bash
-    cmake .
-    make' > build && chmod +x build 
-
-    # Run executable
-    echo '#!/bin/bash
-    ./TestOpenCV' > run && chmod +x run 
-
-    # CMakeLists.txt
-    echo 'cmake_minimum_required(VERSION 2.8)
-    project( TestOpenCV )
-    find_package( OpenCV REQUIRED )
-    include_directories( ${OpenCV_INCLUDE_DIRS} )
-    add_executable( ${PROJECT_NAME} TestOpenCV.cpp )
-    target_link_libraries( ${PROJECT_NAME} ${OpenCV_LIBS} )' > CMakeLists.txt
-
-    # Main
-    echo '#include <stdio.h>
-    #include <opencv2/opencv.hpp>
-
-    using namespace cv;
-
-    int main(int argc, char** argv ){
-        Mat image = imread( "OpenCV-logo.png", 1 );
-        if ( !image.data ){
-            printf("No image data \n");
-            return -1;
-        }
-        namedWindow("Display Image", WINDOW_NORMAL );
-        resizeWindow("Display Image", 800, 600);
-        imshow("Display Image", image);
-        waitKey(0);
-        return 0;
-    }' > TestOpenCV.cpp
-
-    # Get example image
-    wget -O OpenCV-logo.png https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/OpenCV_Logo_with_text_svg_version.svg/1200px-OpenCV_Logo_with_text_svg_version.svg.png
+    wget -O example.zip https://github.com/CSpyridakis/OpenCV-example/archive/main.zip
+    unzip example.zip
+    mv OpenCV-example-main/* ./
+    rm -rf example.zip OpenCV-example-main/
 }
 
 
