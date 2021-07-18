@@ -420,7 +420,8 @@ system(){
     __INST pasystray                                  #PulseAudio system tray
     __INST alltray                                    #Dock apps in system tray (GNOME)
     __INST python3-pip 
-    
+    __INST ncdu                                       #Disk space monitoring tool
+
     __INST paprefs                                    #Enable multiple audio outputs at once
     #To work, install it, open it from terminal goto Simultaneous Outputs and enable it, then
     #run 'pulseaudio -k' and you are ready
