@@ -14,6 +14,11 @@
 #       https://docs.opencv.org/master/d7/d9f/tutorial_linux_install.html
 #
 #
+#   Extra:
+#       To add auto-completion functionality for OpenCV in VSCode:
+#           1) Press Control + Shift + P
+#           2) Write C/C++: Edit Configuration (JSON)
+#           3) Append on includePath this line "/usr/local/include/opencv4/** " 
 
 BUILD_DIR="~/Documents/OpenCV/build"
 OPENCV_DIR="~/Documents/OpenCV"
