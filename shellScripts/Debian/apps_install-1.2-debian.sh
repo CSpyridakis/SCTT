@@ -443,6 +443,9 @@ system(){
     # sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
     #chsh -s $(which zsh)                             #Make zsh primary shell (On debian-based system the default shell usually is /bin/bash)
 
+    #Clipboard from terminal 
+    __INST xclip
+    
     #Clipboard manager Applet
     __INST parcellite                                  
     #IMPORTANT!
