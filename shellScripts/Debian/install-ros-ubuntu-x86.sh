@@ -2,7 +2,7 @@
 #
 #   Author: Spyridakis Christos
 #   Creation Date: 11/8/2021
-#   Last update: 28/8/2021
+#   Last update: 5/9/2021
 #
 #   Description:
 #       Install ROS (Robot Operating System) melodic or noetic version - on Ubuntu OS
@@ -12,6 +12,22 @@
 #
 #
 #   Extra:
+
+LOG_FILENAME="${HOME}/install-ros-ubuntu-x86-log.txt"
+
+red=`tput setaf 1`
+green=`tput setaf 2`
+yellow=`tput setaf 3`
+reset=`tput sgr0`
+procNumber=$(nproc --all)
+
+echoe(){
+    echo "${red}[ERRO]${reset} $@" | tee -a "${LOG_FILENAME}"
+}
+
+echoi(){
+    echo "${yellow}[INFO]${reset} $@" | tee -a "${LOG_FILENAME}"
+}
 
 ROS_DISTRO=""
 INST_TYPE=""
@@ -32,33 +48,43 @@ helpMenu(){
 installation(){
     
     # Setup your sources.list
+    echoi "Setup your sources.list"
     sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
 
     # Set up your keys
-    sudo apt install curl # if you haven't already installed curl
+    echoi "Set up your keys"
+    sudo apt -y install curl # if you haven't already installed curl
     curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
 
     # Installation
-    sudo apt update
+    sudo apt -y update
 
     if [ "${INST_TYPE}" == "full" ] ; then
-        sudo apt install ros-${ROS_DISTRO}-desktop-full    # Desktop-Full Install
+        echoi "Full Installation"
+        sudo apt -y install ros-${ROS_DISTRO}-desktop-full    # Desktop-Full Install
     elif [ "${INST_TYPE}" == "desktop" ] ; then 
-        sudo apt install ros-${ROS_DISTRO}-desktop       # Desktop Install
+        echoi "Desktop Installation"
+        sudo apt -y install ros-${ROS_DISTRO}-desktop       # Desktop Install
     elif [ "${INST_TYPE}" == "base" ] ; then
-        sudo apt install ros-${ROS_DISTRO}-ros-base      # ROS-Base
+        echoi "Base Installation"
+        sudo apt -y install ros-${ROS_DISTRO}-ros-base      # ROS-Base
     fi
 
     # Environment setup
+    echoi "Environment setup"
     [ ${SHELL} = "/usr/bin/zsh" ] && (echo -e "\nsource /opt/ros/${ROS_DISTRO}/setup.zsh \n" >> ~/.zshrc && source ~/.zshrc)
 
     # Dependencies for building packages
-    sudo apt install python3-rosdep python3-rosinstall python3-rosinstall-generator python3-wstool build-essential
+    echoi "Install dependencies for building packages"
+    sudo apt -y install python3-rosdep python3-rosinstall python3-rosinstall-generator python3-wstool build-essential
 
     # Initialize rosdep
-    sudo apt install python3-rosdep
+    echoi "Initialize rosdep"
+    sudo apt -y install python3-rosdep
     sudo rosdep init
     rosdep update
+
+    echoi "Installation Completed Successfully!"
 }
 
 while :
