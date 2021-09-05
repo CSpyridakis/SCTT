@@ -97,12 +97,12 @@ do
         -m | --melodic)   ROS_DISTRO="melodic" ; shift ;;
         -n | --noetic)    ROS_DISTRO="noetic"  ; shift ;;
         --*)
-            echo "Unknown option: $1" >&2
+            echoe "Unknown option: $1" >&2
             helpMenu
             exit 1
             ;;
         -*)
-            echo "Unknown option: $1" >&2
+            echoe "Unknown option: $1" >&2
             helpMenu
             exit 1 
             ;;
@@ -114,6 +114,6 @@ done
 if [ ! -z ${INST_TYPE} ] && [ ! -z ${ROS_DISTRO} ] ; then
     installation
 else
-    echo "Please give installation type and ros distro to install. "
-    echo "Run ./`basename $0` -h for more"
+    echoe "Please give installation type and ros distro to install. "
+    echoe "Run ./`basename $0` -h for more"
 fi
