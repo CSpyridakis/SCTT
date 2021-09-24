@@ -72,6 +72,7 @@ installation(){
 
     # Environment setup
     echoi "Environment setup"
+    echo -e "\nsource /opt/ros/${ROS_DISTRO}/setup.bash \n" >> ~/.bashrc
     [ ${SHELL} = "/usr/bin/zsh" ] && (echo -e "\nsource /opt/ros/${ROS_DISTRO}/setup.zsh \n" >> ~/.zshrc && source ~/.zshrc)
 
     # Dependencies for building packages
