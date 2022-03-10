@@ -229,6 +229,7 @@ engineering(){
     __INST octave
     # pkg install -forge <pkg_name>; # Pkg from octave.sourceforge.io
 
+    # __kalgebra                                        # Featured graph calculator
     # Kicad 
     # __ADDREP ppa:js-reynaud/kicad-5.1
     # __INST kicad
@@ -430,6 +431,7 @@ system(){
 
     # __INST scrcpy                                    #Display phones screen to PC
 
+    __INST calcurse                                    #Terminal based Calendar and To-Do list 
 
     # __INST anbox                                       #Android sandbox
 
