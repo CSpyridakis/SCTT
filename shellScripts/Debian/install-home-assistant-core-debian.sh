@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Download and install a debian based OS for example you can download and install raspios
+# !!! IMPORTANT YOU HAVE TO REPLACE YOUR DEVICE FILE !!!
+# wget https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2022-04-07/2022-04-04-raspios-bullseye-armhf-lite.img.xz
+# unxz 2022-04-04-raspios-bullseye-armhf-lite.img.xz
+# sudo dd if=2022-04-04-raspios-bullseye-armhf-lite.img of=[PUT HERE YOUR DEVICE FILE!] status=progress bs=1M
+ 
 # See https://www.home-assistant.io/installation/raspberrypi for complete instructions
 
 # Install dependencies

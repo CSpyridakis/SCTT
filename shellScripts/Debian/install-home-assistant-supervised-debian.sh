@@ -3,6 +3,12 @@
 # Raspberry Pi 2B
 # See https://peyanski.com/how-to-install-home-assistant-supervised-official-way/#SMART_HOME_Getting_Started_Actionable_Guide
 
+# Download and install a debian based OS for example you can download and install raspios
+# !!! IMPORTANT YOU HAVE TO REPLACE YOUR DEVICE FILE !!!
+# wget https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2022-04-07/2022-04-04-raspios-bullseye-armhf-lite.img.xz
+# unxz 2022-04-04-raspios-bullseye-armhf-lite.img.xz
+# sudo dd if=2022-04-04-raspios-bullseye-armhf-lite.img of=[PUT HERE YOUR DEVICE FILE!] status=progress bs=1M
+
 # ============================================================================================================
 # Use LAN Cable or Disable Wi-Fi randomization during the Home Assistant Supervised installation
 echo -e "[connection] \nwifi.mac-address-randomization=1\n[device]\nwifi.scan-rand-mac-address=no" | sudo tee -a /etc/NetworkManager/conf.d/100-disable-wifi-mac-randomization.conf
