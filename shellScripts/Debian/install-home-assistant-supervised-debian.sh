@@ -44,7 +44,11 @@ wget https://github.com/home-assistant/supervised-installer/releases/latest/down
 sudo dpkg -i homeassistant-supervised.deb
 
 
+# ============================================================================================================
+# Extra
 
+# If you have a problem with apparmor then run this
+# mv /boot/cmdline.txt /boot/cmdline.txt.bu && echo "`cat /boot/cmdline.txt` apparmor=1 security=apparmor" | sudo tee -o /boot/cmdline.txt 
 
 
 
