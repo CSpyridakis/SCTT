@@ -400,6 +400,7 @@ system(){
     __INST gparted                                    #Partition-editing application
     __INST htop                                       #Interactive process viewer
     __INST synergy                                    #Mouse and Keyboard sharing Software
+    #__INST barrier                                    #Synergy alternative
     __INST dconf-tools                                #Low-level configuration system for GSettings
     __INST expect                                     #Automate events using expected words tool
     __INST hardinfo                                   #System useful informations
