@@ -426,6 +426,8 @@ system(){
     __INST ranger                                     #CLI file manager
     __INST nload                                      #Keep an eye on network traffic and bandwidth usage
 
+    __INST xfce4-settings                             #To replace default file browser (run xfce4-mime-settings and goto utils)
+    
     __INST paprefs                                    #Enable multiple audio outputs at once
     #To work, install it, open it from terminal goto Simultaneous Outputs and enable it, then
     #run 'pulseaudio -k' and you are ready
