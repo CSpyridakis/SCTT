@@ -436,6 +436,7 @@ system(){
 
     __INST calcurse                                    #Terminal based Calendar and To-Do list 
 
+    __INST molly-guard                                 # Protect against unwanted shutdowns/reboots
     # __INST anbox                                       #Android sandbox
 
     #PDF presentation tools
