@@ -473,6 +473,8 @@ system(){
     __INST compizconfig-settings-manager 
     __INST compiz-plugins-extra
 
+    __INST iperf3                                     #Perform Network speed tests (from one device run: iperf3 -s | from another iperf3 -c <IP>)
+    
     #__INST xsensors lm-sensors                       #Sensors (Use $sensors-detect)
     #__INST openjdk-8-jdk
     #__INST wallch                                    #Wallpaper Clock
