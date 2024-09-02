@@ -398,7 +398,11 @@ system(){
     __INST software-properties-common                 #Extra softwate packages install
     __INST network-manager                            #Network-Manager
     __INST gparted                                    #Partition-editing application
+    
     __INST htop                                       #Interactive process viewer
+    __INST btop                                       #Graphical process viewer
+    # Other monitoring systems: bottom
+    
     __INST synergy                                    #Mouse and Keyboard sharing Software
     #__INST barrier                                    #Synergy alternative
     __INST dconf-tools                                #Low-level configuration system for GSettings
@@ -424,7 +428,6 @@ system(){
     __INST python3-pip 
     __INST ncdu                                       #Disk space monitoring tool
     __INST ranger                                     #CLI file manager
-    __INST nload                                      #Keep an eye on network traffic and bandwidth usage
 
     __INST xfce4-settings                             #To replace default file browser (run xfce4-mime-settings and goto utils)
     
@@ -474,6 +477,15 @@ system(){
     __INST compiz-plugins-extra
 
     __INST iperf3                                     #Perform Network speed tests (from one device run: iperf3 -s | from another iperf3 -c <IP>)
+    __INST bmon                                       #Graphical Network tool
+    __INST iftop                                      #Network tool
+    __INST nload                                      #Keep an eye on network traffic and bandwidth usage
+    __INST netcat-traditional                         #
+    __INST ncat                                       # nmap version of netcat
+
+    # Network tools
+    __INST ptunnel
+    __INST tcpdump
     
     #__INST xsensors lm-sensors                       #Sensors (Use $sensors-detect)
     #__INST openjdk-8-jdk
