@@ -480,7 +480,7 @@ system(){
     __INST bmon                                       #Graphical Network tool
     __INST iftop                                      #Network tool
     __INST nload                                      #Keep an eye on network traffic and bandwidth usage
-    __INST netcat-traditional                         #
+    __INST netcat-traditional                         #Listen on a port: nc -lvp ${port} | Connect to a port: nc -l ${ip} ${port} | Check if port open: nc -zv ${ip} ${port}
     __INST ncat                                       # nmap version of netcat
 
     # Network tools
