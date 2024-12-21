@@ -75,17 +75,14 @@ fi
 # fi
 
 # Create a list of the sink descriptions
-sink_descriptions=()
+sink_descriptions=""
 if [[ "$sound_server" == "pulseaudio" ]]; then
-  sink_descriptions=($(pacmd list-sinks | sed -n -e 's/.*alsa.name[[:space:]]=[[:space:]]"\(.*\)"/\1/p'))
+    sink_description="TODO"
 elif [[ "$sound_server" == "pipewire" ]]; then
-  sink_descriptions=($(pactl list sinks | sed -n -e 's/.*Description:[[:space:]]\+\(.*\)/\1/p'))
+    sink_description="$(pactl info | grep 'Default Sink' | awk -F': ' '{print $2}' | cut -d'.' -f3- | tr '_' ' ' | tr '-' ' ')"
 fi
 
-# Find the index that matches our new active sink
-for sink_index in "${!sink_descriptions[@]}"; do
-  if [[ "$sink_index" == "$next_sink_index" ]]; then
-    notify-send -i audio-volume-high "Sound output switched to ${sink_descriptions[$sink_index]}"
-    exit
-  fi
-done
+notify-send -i audio-volume-high \
+    -h string:x-canonical-private-synchronous:anything \
+    -a audio-output-change \
+    "Sound output switched to:" "${sink_description}"
