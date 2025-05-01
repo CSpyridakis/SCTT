@@ -14,3 +14,6 @@ Some of them are:
 7. [Backup and Restore your gnome-terminal theme](./shellScripts/Bash-automate-actions/terminal-color-theme-bu.sh)
 8. [Massive rename filenames in folder](./shellScripts/Bash-automate-actions/massive-rename-files-in-folder.sh)
 9. [Simplify Youtube-dl usage](./shellScripts/Bash-automate-actions/yt-dl.sh)
+
+> [!NOTE]
+> TODO: Create an index for future expansion
